@@ -6,16 +6,13 @@ namespace NHibernateLab.NHibernate.EntitiesMaps {
         public GroupMap() {
             Table("Groups");
 
-            Id(x => x.Id);
-
-            Map(x => x.Name)
-                .Length(40)
-                .Not.Nullable();
+            Id(x => x.Id).GeneratedBy.Identity();
+            Map(x => x.Name).Length(40).Not.Nullable();
 
             HasMany(x => x.Students)
-                .Inverse()
-                .Cascade.All()
-                .KeyColumn("Group");
+                    .KeyColumn("GroupId")
+                    .Inverse()
+                    .Cascade.All();
         }
     }
 }

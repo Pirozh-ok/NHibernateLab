@@ -6,15 +6,11 @@ namespace NHibernateLab.NHibernate.EntitiesMaps {
         public TopicMap() {
             Table("Topics");
 
-            Id(x => x.Id);
+            Id(x => x.Id).GeneratedBy.Identity();
+            Map(x => x.Name).Length(40).Not.Nullable();
 
-            Map(x => x.Name)
-                .Length(100)
-                .Not.Nullable();
-
-            HasOne(x => x.Teacher);
-
-            HasOne(x => x.Student);
+            References(x => x.Teacher).Column("TeacherId");
+            References(x => x.Student).Column("StudentId");
         }
     }
 }

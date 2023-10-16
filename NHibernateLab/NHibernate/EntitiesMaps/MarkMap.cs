@@ -2,17 +2,15 @@
 using NHibernateLab.Entities;
 
 namespace NHibernateLab.NHibernate.EntitiesMaps {
-    public class MarkMap : ClassMap<Mark>{
+    public class MarkMap : ClassMap<Mark> {
         public MarkMap() {
             Table("Marks");
 
-            Id(x => x.Id);
+            Id(x => x.Id).GeneratedBy.Identity();
+            Map(x => x.ExamMark).CustomSqlType("int CHECK (ExamMark >= 0 AND ExamMark <= 100)").Not.Nullable();
+            Map(x => x.DefendMark).CustomSqlType("int CHECK (DefendMark >= 0 AND DefendMark <= 100)").Not.Nullable();
 
-            Map(x => x.ExamMark);
-
-            Map(x => x.DefendMark);
-
-            HasOne(x => x.Student);
+            References(x => x.Student).Column("StudentId");
         }
     }
 }

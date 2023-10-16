@@ -6,33 +6,19 @@ namespace NHibernateLab.NHibernate.EntitiesMaps {
         public StudentMap() {
             Table("Students");
 
-            Id(x => x.Id);
+            Table("Students"); // Set the table name
 
-            Map(x => x.FirstName)
-                .Length(40)
-                .Not.Nullable();
+            Id(x => x.Id).GeneratedBy.Identity();
+            Map(x => x.FirstName).Length(40);
+            Map(x => x.LastName).Length(40);
+            Map(x => x.Patronymic).Length(40);
+            Map(x => x.CreditBookNumber).Length(40);
 
-            Map(x => x.LastName)
-                .Length(40)
-                .Not.Nullable();
+            HasOne(x => x.Mark).Cascade.All();
+            HasOne(x => x.Topic).Cascade.All();
 
-            Map(x => x.Patronymic)
-                .Length(40)
-                .Not.Nullable();
-
-            References(x => x.Faculty)
-                .Column("Faculty");
-
-            References(x => x.Group)
-                .Column("Group");
-
-            HasOne(x => x.Mark)
-                .Cascade.All()
-                .Constrained();
-
-            HasOne(x => x.Topic)
-                .Cascade.All()
-                .Constrained();
+            References(x => x.Faculty).Column("FacultyId");
+            References(x => x.Group).Column("GroupId");
         }
     }
 }

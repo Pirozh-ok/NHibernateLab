@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace NHibernateLab.Entities {
     public class Group {
-        public virtual Guid Id { get; set; }
+        public virtual int Id { get; set; }
         public virtual string Name { get; set; }
 
 

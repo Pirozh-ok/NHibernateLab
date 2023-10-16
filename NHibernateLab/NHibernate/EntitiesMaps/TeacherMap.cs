@@ -7,36 +7,16 @@ namespace NHibernateLab.NHibernate.EntitiesMaps {
         public TeacherMap() {
             Table("Teachers");
 
-            Id(x => x.Id);
+            Id(x => x.Id).GeneratedBy.Identity();
+            Map(x => x.FirstName).Length(40);
+            Map(x => x.LastName).Length(40);
+            Map(x => x.Patronymic).Length(40);
+            Map(x => x.Phone).Length(40).Unique();
+            Map(x => x.Email).Length(40).Unique();
 
-            Map(x => x.FirstName)
-                .Length(40)
-                .Not.Nullable();
-
-            Map(x => x.LastName)
-                .Length(40)
-                .Not.Nullable();
-
-            Map(x => x.Patronymic)
-                .Length(40)
-                .Not.Nullable();
-
-            Map(x => x.Phone)
-                .Length(15)
-                .Unique();
-
-            Map(x => x.Email)
-                .Length(30)
-                .Unique();
-
-            References(x => x.Degree)
-                .Column("Degree");
-
-            References(x => x.Department)
-                .Column("Department");
-
-            References(x => x.Rank)
-                .Column("Rank");
+            References(x => x.Department).Column("DepartmentId");
+            References(x => x.Degree).Column("DegreeId");
+            References(x => x.Rank).Column("RankId");
         }
     }
 }

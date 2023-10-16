@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace NHibernateLab.Entities {
     public class Rank {
-        public virtual Guid Id { get; set; }
+        public virtual int Id { get; set; }
         public virtual string Name { get; set; }
 
         private IList<Teacher> _teachers;

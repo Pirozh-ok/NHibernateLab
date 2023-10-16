@@ -6,16 +6,13 @@ namespace NHibernateLab.NHibernate.EntitiesMaps {
         public DepartmentMap() {
             Table("Departments");
 
-            Id(x => x.Id);
-
-            Map(x => x.Name)
-                .Length(40)
-                .Not.Nullable();
+            Id(x => x.Id).GeneratedBy.Identity();
+            Map(x => x.Name).Length(40).Not.Nullable();
 
             HasMany(x => x.Teachers)
                 .Inverse()
                 .Cascade.All()
-                .KeyColumn("Department");
+                .KeyColumn("DepartmentId");
         }
     }
 }

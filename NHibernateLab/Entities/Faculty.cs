@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NHibernateLab.Entities {
     public class Faculty {
-        public virtual Guid Id { get; set; }
+        public virtual int Id { get; set; }
         public virtual string Name { get; set; }
 
         private IList<Student> _students;

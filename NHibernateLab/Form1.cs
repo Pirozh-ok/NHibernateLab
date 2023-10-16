@@ -10,12 +10,9 @@ namespace NHibernateLab {
         public Form1() {
             InitializeComponent();
 
-            using (var session = NHibernateHelper.OpenSession()) {
-                using (var tx = session.BeginTransaction()) {
-                    count = (int)session.CreateQuery("select count(*) from Marks").UniqueResult();
-                    tx.Commit();
-                }
-            }
+            NHibernateHelper.CreateDatabase();
+
+            MessageBox.Show("Tables created successful");
         }
     }
 }
