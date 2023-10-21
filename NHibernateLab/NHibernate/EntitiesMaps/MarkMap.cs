@@ -6,11 +6,11 @@ namespace NHibernateLab.NHibernate.EntitiesMaps {
         public MarkMap() {
             Table("Marks");
 
-            Id(x => x.Id).GeneratedBy.Identity();
+            Id(x => x.Id).CustomSqlType("Serial").GeneratedBy.Native();
             Map(x => x.ExamMark).CustomSqlType("int CHECK (ExamMark >= 0 AND ExamMark <= 100)").Not.Nullable();
             Map(x => x.DefendMark).CustomSqlType("int CHECK (DefendMark >= 0 AND DefendMark <= 100)").Not.Nullable();
 
-            References(x => x.Student).Column("StudentId");
+            References(x => x.Student).Column("CreditBookNumber");
         }
     }
 }
