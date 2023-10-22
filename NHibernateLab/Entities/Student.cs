@@ -1,5 +1,5 @@
 ﻿namespace NHibernateLab.Entities {
-    public class Student {
+    public class Student : IEntity {
         public virtual int CreditBookNumber { get; set; }
         public virtual string FirstName { get; set; }
         public virtual string LastName { get; set; }

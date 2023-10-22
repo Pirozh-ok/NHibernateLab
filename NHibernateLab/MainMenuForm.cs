@@ -15,33 +15,11 @@ namespace NHibernateLab {
 
         private async void MyForm_Load(object sender, EventArgs e) {
             var service = new DegreeService();
-            var result = await service.GetAll();
+            var result = await service.GetAllAsync();
 
             var r = result.Select((x, i) => new { Номер = i + 1, Название = x.Name }).ToList();
 
             dgvStudents.DataSource = r;
-        }
-
-        //private void ContextMenuStrip_Opening(object sender, CancelEventArgs e) {
-            
-        //}
-
-        //private void ToolStripItem_Click(object sender, System.EventArgs e) {
-        //    var point = dgvStudents.PointToClient(cmStudent.Bounds.Location);
-        //    var info = dgvStudents.HitTest(point.X, point.Y);
-
-        //    // Работаем с ячейкой
-        //    var value = dgvStudents[info.ColumnIndex, info.RowIndex].Value;
-        //}
-
-        private void cmStudent_Opening(object sender, CancelEventArgs e) {
-            //var point = dgvStudents.PointToClient(cmStudent.Bounds.Location);
-            //var info = dgvStudents.HitTest(point.X, point.Y);
-
-            //// Отменяем показ контекстного меню, если клик был не на ячейке
-            //if (info.RowIndex == -1 || info.ColumnIndex == -1) {
-            //    e.Cancel = true;
-            //}
         }
 
         private void изменитьToolStripMenuItem_Click(object sender, EventArgs e) {

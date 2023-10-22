@@ -1,7 +1,5 @@
-﻿using System;
-
-namespace NHibernateLab.Entities {
-    public class Topic {
+﻿namespace NHibernateLab.Entities {
+    public class Topic : IEntity {
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
 

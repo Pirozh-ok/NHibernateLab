@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace NHibernateLab.Entities {
-    public class Degree {
+    public class Degree : IEntity {
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
 

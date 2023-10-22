@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using NHibernateLab.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NHibernateLab.Services.Interfaces {
-    public interface IEntityService<TEntity> {
-        Task Create(TEntity entity);
-        Task Delete(TEntity entity);
-        Task<IList<TEntity>> GetAll();
-        Task<TEntity> GetById(int id);
-        Task<IList<TEntity>> Search(string text);
-        Task Update(TEntity entity);
+    public interface IEntityService<TEntity> where TEntity : IEntity, new() {
+        Task CreateAsync(TEntity entity);
+        Task DeleteAsync(TEntity entity);
+        Task<IList<TEntity>> GetAllAsync();
+        Task<TEntity> GetByIdAsync(int id);
+        Task<IList<TEntity>> SearchAsync(string text);
+        Task UpdateAsync(TEntity entity);
     }
 }
