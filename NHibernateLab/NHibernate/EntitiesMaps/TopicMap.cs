@@ -7,7 +7,7 @@ namespace NHibernateLab.NHibernate.EntitiesMaps {
             Table("Topics");
 
             Id(x => x.Id).CustomSqlType("Serial").GeneratedBy.Native();
-            Map(x => x.Name).Length(40).Not.Nullable();
+            Map(x => x.Name).Length(Constants.NameMaxLen).Not.Nullable();
 
             References(x => x.Teacher).Column("TeacherId");
             References(x => x.Student).Column("CreditBookNumber");

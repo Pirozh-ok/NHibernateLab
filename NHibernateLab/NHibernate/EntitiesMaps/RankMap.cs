@@ -7,7 +7,7 @@ namespace NHibernateLab.NHibernate.EntitiesMaps {
             Table("Ranks");
 
             Id(x => x.Id).CustomSqlType("Serial").GeneratedBy.Native();
-            Map(x => x.Name).Length(40).Not.Nullable();
+            Map(x => x.Name).Length(Constants.NameMaxLen).Not.Nullable();
 
             HasMany(x => x.Teachers)
                 .KeyColumn("RankId")

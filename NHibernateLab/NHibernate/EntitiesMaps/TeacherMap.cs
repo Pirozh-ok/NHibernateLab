@@ -8,11 +8,11 @@ namespace NHibernateLab.NHibernate.EntitiesMaps {
             Table("Teachers");
 
             Id(x => x.Id).CustomSqlType("Serial").GeneratedBy.Native();
-            Map(x => x.FirstName).Length(40);
-            Map(x => x.LastName).Length(40);
-            Map(x => x.Patronymic).Length(40);
-            Map(x => x.Phone).Length(40).Unique();
-            Map(x => x.Email).Length(40).Unique();
+            Map(x => x.FirstName).Length(Constants.NameMaxLen);
+            Map(x => x.LastName).Length(Constants.NameMaxLen);
+            Map(x => x.Patronymic).Length(Constants.NameMaxLen);
+            Map(x => x.Phone).Length(Constants.NameMaxLen).Unique();
+            Map(x => x.Email).Length(Constants.NameMaxLen).Unique();
 
             References(x => x.Department).Column("DepartmentId");
             References(x => x.Degree).Column("DegreeId");

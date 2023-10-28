@@ -14,13 +14,16 @@ namespace NHibernateLab.Services.Implementations {
             }
         }
 
-        public async Task DeleteAsync(TEntity entity) {
+        public async Task DeleteAsync(int deleteEntityId) {
             using (ISession session = NHibernateHelper.OpenSession()) {
-                await session.DeleteAsync(entity);
+                string hql = $"DELETE FROM {EntityType} WHERE id = :entityId";
+                var query = session.CreateQuery(hql);
+                query.SetInt32("entityId", deleteEntityId);
+                int rowsAffected = await query.ExecuteUpdateAsync();
             }
         }
 
-        public async Task<IList<TEntity>> GetAllAsync() {
+        public virtual async Task<IList<TEntity>> GetAllAsync() {
             using (ISession session = NHibernateHelper.OpenSession()) {
                 string hql = $"FROM {EntityType}";
                 IQuery query = session.CreateQuery(hql);

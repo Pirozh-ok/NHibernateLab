@@ -33,22 +33,20 @@
             this.dgvTopics = new System.Windows.Forms.DataGridView();
             this.marksPage = new System.Windows.Forms.TabPage();
             this.dgvMarks = new System.Windows.Forms.DataGridView();
-            this.cmStudent = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.изменитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmTeacher = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.изменитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.удалитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmTopic = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.изменитьToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.удалитьToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.добавитьНовуюТемуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.добавитьНовогоПреподавателяToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.добавитьНовогоСтудентаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmMark = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.изменитьToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.удалитьToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.добавитьНовуюОценкуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupPage = new System.Windows.Forms.TabPage();
+            this.dgvGroups = new System.Windows.Forms.DataGridView();
+            this.facultyPage = new System.Windows.Forms.TabPage();
+            this.dgvFaculties = new System.Windows.Forms.DataGridView();
+            this.departmentPage = new System.Windows.Forms.TabPage();
+            this.dgvDepartments = new System.Windows.Forms.DataGridView();
+            this.degreePage = new System.Windows.Forms.TabPage();
+            this.dgvDegrees = new System.Windows.Forms.DataGridView();
+            this.rankPage = new System.Windows.Forms.TabPage();
+            this.dgvRanks = new System.Windows.Forms.DataGridView();
+            this.cmTableAction = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmiUpdateRecord = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmiRemoveRecord = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmiAddRecord = new System.Windows.Forms.ToolStripMenuItem();
             this.tbcDataViews.SuspendLayout();
             this.studentsPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStudents)).BeginInit();
@@ -58,10 +56,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvTopics)).BeginInit();
             this.marksPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMarks)).BeginInit();
-            this.cmStudent.SuspendLayout();
-            this.cmTeacher.SuspendLayout();
-            this.cmTopic.SuspendLayout();
-            this.cmMark.SuspendLayout();
+            this.groupPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).BeginInit();
+            this.facultyPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFaculties)).BeginInit();
+            this.departmentPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDepartments)).BeginInit();
+            this.degreePage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDegrees)).BeginInit();
+            this.rankPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRanks)).BeginInit();
+            this.cmTableAction.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbcDataViews
@@ -70,6 +75,11 @@
             this.tbcDataViews.Controls.Add(this.teachersPage);
             this.tbcDataViews.Controls.Add(this.topicsPage);
             this.tbcDataViews.Controls.Add(this.marksPage);
+            this.tbcDataViews.Controls.Add(this.groupPage);
+            this.tbcDataViews.Controls.Add(this.facultyPage);
+            this.tbcDataViews.Controls.Add(this.departmentPage);
+            this.tbcDataViews.Controls.Add(this.degreePage);
+            this.tbcDataViews.Controls.Add(this.rankPage);
             this.tbcDataViews.Location = new System.Drawing.Point(12, 12);
             this.tbcDataViews.Name = "tbcDataViews";
             this.tbcDataViews.SelectedIndex = 0;
@@ -86,6 +96,7 @@
             this.studentsPage.TabIndex = 0;
             this.studentsPage.Text = "Студенты";
             this.studentsPage.UseVisualStyleBackColor = true;
+            this.studentsPage.Enter += new System.EventHandler(this.studentsPage_Enter);
             // 
             // dgvStudents
             // 
@@ -108,6 +119,7 @@
             this.teachersPage.TabIndex = 1;
             this.teachersPage.Text = "Преподаватели";
             this.teachersPage.UseVisualStyleBackColor = true;
+            this.teachersPage.Enter += new System.EventHandler(this.teachersPage_Enter);
             // 
             // dgvTeachers
             // 
@@ -128,6 +140,7 @@
             this.topicsPage.TabIndex = 2;
             this.topicsPage.Text = "Темы";
             this.topicsPage.UseVisualStyleBackColor = true;
+            this.topicsPage.Enter += new System.EventHandler(this.topicsPage_Enter);
             // 
             // dgvTopics
             // 
@@ -148,6 +161,7 @@
             this.marksPage.TabIndex = 3;
             this.marksPage.Text = "Оценки";
             this.marksPage.UseVisualStyleBackColor = true;
+            this.marksPage.Enter += new System.EventHandler(this.marksPage_Enter);
             // 
             // dgvMarks
             // 
@@ -159,119 +173,146 @@
             this.dgvMarks.Size = new System.Drawing.Size(700, 350);
             this.dgvMarks.TabIndex = 0;
             // 
-            // cmStudent
+            // groupPage
             // 
-            this.cmStudent.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.cmStudent.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.изменитьToolStripMenuItem,
-            this.удалитьToolStripMenuItem,
-            this.добавитьНовогоСтудентаToolStripMenuItem});
-            this.cmStudent.Name = "cmStudent";
-            this.cmStudent.Size = new System.Drawing.Size(263, 76);
+            this.groupPage.Controls.Add(this.dgvGroups);
+            this.groupPage.Location = new System.Drawing.Point(4, 25);
+            this.groupPage.Name = "groupPage";
+            this.groupPage.Padding = new System.Windows.Forms.Padding(3);
+            this.groupPage.Size = new System.Drawing.Size(768, 397);
+            this.groupPage.TabIndex = 4;
+            this.groupPage.Text = "Группы";
+            this.groupPage.UseVisualStyleBackColor = true;
+            this.groupPage.Enter += new System.EventHandler(this.groupPage_Enter);
             // 
-            // изменитьToolStripMenuItem
+            // dgvGroups
             // 
-            this.изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
-            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(262, 24);
-            this.изменитьToolStripMenuItem.Text = "Изменить";
-            this.изменитьToolStripMenuItem.Click += new System.EventHandler(this.изменитьToolStripMenuItem_Click);
+            this.dgvGroups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvGroups.Location = new System.Drawing.Point(34, 23);
+            this.dgvGroups.Name = "dgvGroups";
+            this.dgvGroups.RowHeadersWidth = 51;
+            this.dgvGroups.RowTemplate.Height = 24;
+            this.dgvGroups.Size = new System.Drawing.Size(700, 350);
+            this.dgvGroups.TabIndex = 1;
             // 
-            // удалитьToolStripMenuItem
+            // facultyPage
             // 
-            this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
-            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(262, 24);
-            this.удалитьToolStripMenuItem.Text = "Удалить";
-            this.удалитьToolStripMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
+            this.facultyPage.Controls.Add(this.dgvFaculties);
+            this.facultyPage.Location = new System.Drawing.Point(4, 25);
+            this.facultyPage.Name = "facultyPage";
+            this.facultyPage.Padding = new System.Windows.Forms.Padding(3);
+            this.facultyPage.Size = new System.Drawing.Size(768, 397);
+            this.facultyPage.TabIndex = 5;
+            this.facultyPage.Text = "Факультеты";
+            this.facultyPage.UseVisualStyleBackColor = true;
+            this.facultyPage.Enter += new System.EventHandler(this.facultyPage_Enter);
             // 
-            // cmTeacher
+            // dgvFaculties
             // 
-            this.cmTeacher.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.cmTeacher.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.изменитьToolStripMenuItem1,
-            this.удалитьToolStripMenuItem1,
-            this.добавитьНовогоПреподавателяToolStripMenuItem});
-            this.cmTeacher.Name = "cmTeacher";
-            this.cmTeacher.Size = new System.Drawing.Size(310, 76);
+            this.dgvFaculties.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvFaculties.Location = new System.Drawing.Point(34, 23);
+            this.dgvFaculties.Name = "dgvFaculties";
+            this.dgvFaculties.RowHeadersWidth = 51;
+            this.dgvFaculties.RowTemplate.Height = 24;
+            this.dgvFaculties.Size = new System.Drawing.Size(700, 350);
+            this.dgvFaculties.TabIndex = 1;
             // 
-            // изменитьToolStripMenuItem1
+            // departmentPage
             // 
-            this.изменитьToolStripMenuItem1.Name = "изменитьToolStripMenuItem1";
-            this.изменитьToolStripMenuItem1.Size = new System.Drawing.Size(309, 24);
-            this.изменитьToolStripMenuItem1.Text = "Изменить";
+            this.departmentPage.Controls.Add(this.dgvDepartments);
+            this.departmentPage.Location = new System.Drawing.Point(4, 25);
+            this.departmentPage.Name = "departmentPage";
+            this.departmentPage.Padding = new System.Windows.Forms.Padding(3);
+            this.departmentPage.Size = new System.Drawing.Size(768, 397);
+            this.departmentPage.TabIndex = 6;
+            this.departmentPage.Text = "Кафедры";
+            this.departmentPage.UseVisualStyleBackColor = true;
+            this.departmentPage.Enter += new System.EventHandler(this.departmentPage_Enter);
             // 
-            // удалитьToolStripMenuItem1
+            // dgvDepartments
             // 
-            this.удалитьToolStripMenuItem1.Name = "удалитьToolStripMenuItem1";
-            this.удалитьToolStripMenuItem1.Size = new System.Drawing.Size(309, 24);
-            this.удалитьToolStripMenuItem1.Text = "Удалить";
+            this.dgvDepartments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvDepartments.Location = new System.Drawing.Point(34, 23);
+            this.dgvDepartments.Name = "dgvDepartments";
+            this.dgvDepartments.RowHeadersWidth = 51;
+            this.dgvDepartments.RowTemplate.Height = 24;
+            this.dgvDepartments.Size = new System.Drawing.Size(700, 350);
+            this.dgvDepartments.TabIndex = 1;
             // 
-            // cmTopic
+            // degreePage
             // 
-            this.cmTopic.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.cmTopic.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.изменитьToolStripMenuItem2,
-            this.удалитьToolStripMenuItem2,
-            this.добавитьНовуюТемуToolStripMenuItem});
-            this.cmTopic.Name = "cmTopic";
-            this.cmTopic.Size = new System.Drawing.Size(231, 76);
+            this.degreePage.Controls.Add(this.dgvDegrees);
+            this.degreePage.Location = new System.Drawing.Point(4, 25);
+            this.degreePage.Name = "degreePage";
+            this.degreePage.Padding = new System.Windows.Forms.Padding(3);
+            this.degreePage.Size = new System.Drawing.Size(768, 397);
+            this.degreePage.TabIndex = 7;
+            this.degreePage.Text = "Степени";
+            this.degreePage.UseVisualStyleBackColor = true;
+            this.degreePage.Enter += new System.EventHandler(this.degreePage_Enter);
             // 
-            // изменитьToolStripMenuItem2
+            // dgvDegrees
             // 
-            this.изменитьToolStripMenuItem2.Name = "изменитьToolStripMenuItem2";
-            this.изменитьToolStripMenuItem2.Size = new System.Drawing.Size(230, 24);
-            this.изменитьToolStripMenuItem2.Text = "Изменить";
+            this.dgvDegrees.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvDegrees.Location = new System.Drawing.Point(34, 23);
+            this.dgvDegrees.Name = "dgvDegrees";
+            this.dgvDegrees.RowHeadersWidth = 51;
+            this.dgvDegrees.RowTemplate.Height = 24;
+            this.dgvDegrees.Size = new System.Drawing.Size(700, 350);
+            this.dgvDegrees.TabIndex = 1;
             // 
-            // удалитьToolStripMenuItem2
+            // rankPage
             // 
-            this.удалитьToolStripMenuItem2.Name = "удалитьToolStripMenuItem2";
-            this.удалитьToolStripMenuItem2.Size = new System.Drawing.Size(230, 24);
-            this.удалитьToolStripMenuItem2.Text = "Удалить";
+            this.rankPage.Controls.Add(this.dgvRanks);
+            this.rankPage.Location = new System.Drawing.Point(4, 25);
+            this.rankPage.Name = "rankPage";
+            this.rankPage.Padding = new System.Windows.Forms.Padding(3);
+            this.rankPage.Size = new System.Drawing.Size(768, 397);
+            this.rankPage.TabIndex = 8;
+            this.rankPage.Text = "Звания";
+            this.rankPage.UseVisualStyleBackColor = true;
+            this.rankPage.Enter += new System.EventHandler(this.rankPage_Enter);
             // 
-            // добавитьНовуюТемуToolStripMenuItem
+            // dgvRanks
             // 
-            this.добавитьНовуюТемуToolStripMenuItem.Name = "добавитьНовуюТемуToolStripMenuItem";
-            this.добавитьНовуюТемуToolStripMenuItem.Size = new System.Drawing.Size(230, 24);
-            this.добавитьНовуюТемуToolStripMenuItem.Text = "Добавить новую тему";
+            this.dgvRanks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvRanks.Location = new System.Drawing.Point(34, 23);
+            this.dgvRanks.Name = "dgvRanks";
+            this.dgvRanks.RowHeadersWidth = 51;
+            this.dgvRanks.RowTemplate.Height = 24;
+            this.dgvRanks.Size = new System.Drawing.Size(700, 350);
+            this.dgvRanks.TabIndex = 1;
             // 
-            // добавитьНовогоПреподавателяToolStripMenuItem
+            // cmTableAction
             // 
-            this.добавитьНовогоПреподавателяToolStripMenuItem.Name = "добавитьНовогоПреподавателяToolStripMenuItem";
-            this.добавитьНовогоПреподавателяToolStripMenuItem.Size = new System.Drawing.Size(309, 24);
-            this.добавитьНовогоПреподавателяToolStripMenuItem.Text = "Добавить нового преподавателя";
+            this.cmTableAction.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.cmTableAction.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmiUpdateRecord,
+            this.cmiRemoveRecord,
+            this.cmiAddRecord});
+            this.cmTableAction.Name = "cmStudent";
+            this.cmTableAction.Size = new System.Drawing.Size(247, 76);
             // 
-            // добавитьНовогоСтудентаToolStripMenuItem
+            // cmiUpdateRecord
             // 
-            this.добавитьНовогоСтудентаToolStripMenuItem.Name = "добавитьНовогоСтудентаToolStripMenuItem";
-            this.добавитьНовогоСтудентаToolStripMenuItem.Size = new System.Drawing.Size(262, 24);
-            this.добавитьНовогоСтудентаToolStripMenuItem.Text = "Добавить нового студента";
+            this.cmiUpdateRecord.Name = "cmiUpdateRecord";
+            this.cmiUpdateRecord.Size = new System.Drawing.Size(246, 24);
+            this.cmiUpdateRecord.Text = "Изменить";
+            this.cmiUpdateRecord.Click += new System.EventHandler(this.изменитьToolStripMenuItem_Click);
             // 
-            // cmMark
+            // cmiRemoveRecord
             // 
-            this.cmMark.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.cmMark.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.изменитьToolStripMenuItem3,
-            this.удалитьToolStripMenuItem3,
-            this.добавитьНовуюОценкуToolStripMenuItem});
-            this.cmMark.Name = "cmMark";
-            this.cmMark.Size = new System.Drawing.Size(248, 76);
+            this.cmiRemoveRecord.Name = "cmiRemoveRecord";
+            this.cmiRemoveRecord.Size = new System.Drawing.Size(246, 24);
+            this.cmiRemoveRecord.Text = "Удалить";
+            this.cmiRemoveRecord.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
             // 
-            // изменитьToolStripMenuItem3
+            // cmiAddRecord
             // 
-            this.изменитьToolStripMenuItem3.Name = "изменитьToolStripMenuItem3";
-            this.изменитьToolStripMenuItem3.Size = new System.Drawing.Size(247, 24);
-            this.изменитьToolStripMenuItem3.Text = "Изменить";
-            // 
-            // удалитьToolStripMenuItem3
-            // 
-            this.удалитьToolStripMenuItem3.Name = "удалитьToolStripMenuItem3";
-            this.удалитьToolStripMenuItem3.Size = new System.Drawing.Size(247, 24);
-            this.удалитьToolStripMenuItem3.Text = "Удалить";
-            // 
-            // добавитьНовуюОценкуToolStripMenuItem
-            // 
-            this.добавитьНовуюОценкуToolStripMenuItem.Name = "добавитьНовуюОценкуToolStripMenuItem";
-            this.добавитьНовуюОценкуToolStripMenuItem.Size = new System.Drawing.Size(247, 24);
-            this.добавитьНовуюОценкуToolStripMenuItem.Text = "Добавить новую оценку";
+            this.cmiAddRecord.Name = "cmiAddRecord";
+            this.cmiAddRecord.Size = new System.Drawing.Size(246, 24);
+            this.cmiAddRecord.Text = "Добавить новую запись";
+            this.cmiAddRecord.Click += new System.EventHandler(this.добавитьНовогоСтудентаToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -290,10 +331,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvTopics)).EndInit();
             this.marksPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMarks)).EndInit();
-            this.cmStudent.ResumeLayout(false);
-            this.cmTeacher.ResumeLayout(false);
-            this.cmTopic.ResumeLayout(false);
-            this.cmMark.ResumeLayout(false);
+            this.groupPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).EndInit();
+            this.facultyPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFaculties)).EndInit();
+            this.departmentPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDepartments)).EndInit();
+            this.degreePage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDegrees)).EndInit();
+            this.rankPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRanks)).EndInit();
+            this.cmTableAction.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -304,27 +352,25 @@
         private System.Windows.Forms.TabPage teachersPage;
         private System.Windows.Forms.TabPage studentsPage;
         private System.Windows.Forms.DataGridView dgvStudents;
-        private System.Windows.Forms.ContextMenuStrip cmStudent;
-        private System.Windows.Forms.ToolStripMenuItem изменитьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip cmTableAction;
+        private System.Windows.Forms.ToolStripMenuItem cmiUpdateRecord;
+        private System.Windows.Forms.ToolStripMenuItem cmiRemoveRecord;
         private System.Windows.Forms.DataGridView dgvTeachers;
         private System.Windows.Forms.TabPage topicsPage;
         private System.Windows.Forms.DataGridView dgvTopics;
         private System.Windows.Forms.TabPage marksPage;
         private System.Windows.Forms.DataGridView dgvMarks;
-        private System.Windows.Forms.ToolStripMenuItem добавитьНовогоСтудентаToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip cmTeacher;
-        private System.Windows.Forms.ToolStripMenuItem изменитьToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem добавитьНовогоПреподавателяToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip cmTopic;
-        private System.Windows.Forms.ToolStripMenuItem изменитьToolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem добавитьНовуюТемуToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip cmMark;
-        private System.Windows.Forms.ToolStripMenuItem изменитьToolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem добавитьНовуюОценкуToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cmiAddRecord;
+        private System.Windows.Forms.TabPage groupPage;
+        private System.Windows.Forms.DataGridView dgvGroups;
+        private System.Windows.Forms.TabPage facultyPage;
+        private System.Windows.Forms.DataGridView dgvFaculties;
+        private System.Windows.Forms.TabPage departmentPage;
+        private System.Windows.Forms.DataGridView dgvDepartments;
+        private System.Windows.Forms.TabPage degreePage;
+        private System.Windows.Forms.DataGridView dgvDegrees;
+        private System.Windows.Forms.TabPage rankPage;
+        private System.Windows.Forms.DataGridView dgvRanks;
     }
 }
 

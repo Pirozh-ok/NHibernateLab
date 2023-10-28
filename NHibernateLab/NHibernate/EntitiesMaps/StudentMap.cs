@@ -7,9 +7,9 @@ namespace NHibernateLab.NHibernate.EntitiesMaps {
             Table("Students");
 
             Id(x => x.CreditBookNumber).CustomSqlType("Serial").GeneratedBy.Native();
-            Map(x => x.FirstName).Length(40);
-            Map(x => x.LastName).Length(40);
-            Map(x => x.Patronymic).Length(40);
+            Map(x => x.FirstName).Length(Constants.NameMaxLen);
+            Map(x => x.LastName).Length(Constants.NameMaxLen);
+            Map(x => x.Patronymic).Length(Constants.NameMaxLen);
 
             HasOne(x => x.Mark).Cascade.All();
             HasOne(x => x.Topic).Cascade.All();
