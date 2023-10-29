@@ -1,12 +1,8 @@
-﻿using FluentNHibernate.Data;
-using NHibernate;
-using NHibernate.Type;
+﻿using NHibernate;
 using NHibernateLab.Entities;
 using NHibernateLab.NHibernate;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace NHibernateLab.Services.Implementations {
     public class StudentService : EntityService<Student> {
@@ -56,6 +52,7 @@ namespace NHibernateLab.Services.Implementations {
                 string hql = "UPDATE Student s " +
              "SET s.FirstName = :newFirstName, " +
              "s.LastName = :newLastName, " +
+             "s.Patronymic = :newPatronymic, " +
              "s.FacultyId = :newFaculty " +
              "s.GroupId = :newGroup " +
              "WHERE s.CreditBookNumber = :creditBookNumber";

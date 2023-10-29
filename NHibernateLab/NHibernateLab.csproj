@@ -254,6 +254,7 @@
     <Compile Include="Services\Implementations\GroupService.cs" />
     <Compile Include="Services\Implementations\RankService.cs" />
     <Compile Include="Services\Implementations\StudentService.cs" />
+    <Compile Include="Services\Implementations\TeacherService.cs" />
     <Compile Include="Services\Interfaces\IEntityService.cs" />
     <Compile Include="UI\Forms\AddStudentForm.cs">
       <SubType>Form</SubType>
@@ -261,6 +262,7 @@
     <Compile Include="UI\Forms\AddStudentForm.Designer.cs">
       <DependentUpon>AddStudentForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\UpdateStudentForm.cs" />
     <Compile Include="UI\MessagesConstants.cs" />
     <Compile Include="UI\ValidateService.cs" />
     <EmbeddedResource Include="MainMenuForm.resx">

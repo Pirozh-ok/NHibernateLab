@@ -298,21 +298,21 @@
             this.cmiUpdateRecord.Name = "cmiUpdateRecord";
             this.cmiUpdateRecord.Size = new System.Drawing.Size(246, 24);
             this.cmiUpdateRecord.Text = "Изменить";
-            this.cmiUpdateRecord.Click += new System.EventHandler(this.изменитьToolStripMenuItem_Click);
+            this.cmiUpdateRecord.Click += new System.EventHandler(this.updateRecordToolStripMenuItem_Click);
             // 
             // cmiRemoveRecord
             // 
             this.cmiRemoveRecord.Name = "cmiRemoveRecord";
             this.cmiRemoveRecord.Size = new System.Drawing.Size(246, 24);
             this.cmiRemoveRecord.Text = "Удалить";
-            this.cmiRemoveRecord.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
+            this.cmiRemoveRecord.Click += new System.EventHandler(this.removeRecordToolStripMenuItem_Click);
             // 
             // cmiAddRecord
             // 
             this.cmiAddRecord.Name = "cmiAddRecord";
             this.cmiAddRecord.Size = new System.Drawing.Size(246, 24);
             this.cmiAddRecord.Text = "Добавить новую запись";
-            this.cmiAddRecord.Click += new System.EventHandler(this.добавитьНовогоСтудентаToolStripMenuItem_Click);
+            this.cmiAddRecord.Click += new System.EventHandler(this.addRecordToolStripMenuItem_Click);
             // 
             // MainForm
             // 

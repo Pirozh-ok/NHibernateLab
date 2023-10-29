@@ -1,4 +1,5 @@
-﻿using NHibernateLab.NHibernate;
+﻿using NHibernateLab.Entities;
+using NHibernateLab.NHibernate;
 using NHibernateLab.Services.Implementations;
 using NHibernateLab.UI.Forms;
 using System;
@@ -14,6 +15,17 @@ namespace NHibernateLab {
         private DataGridView _activeDataGrid;
         private string _activeDataGridType;
         private Dictionary<string, Func<Task<List<object>>>> updateGridMethods;
+
+        private IList<Student> _students;
+        private IList<Teacher> _teachers;
+        private IList<Topic> _topics;
+        private IList<Mark> _marks;
+        private IList<Group> _groups;
+        private IList<Faculty> _faculties;
+        private IList<Department> _departments;
+        private IList<Degree> _degrees;
+        private IList<Rank> _ranks;
+
 
         public MainForm() {
             InitializeComponent();
@@ -41,7 +53,7 @@ namespace NHibernateLab {
             _updateForm += UpdateForm;
         }
 
-        private void изменитьToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void updateRecordToolStripMenuItem_Click(object sender, EventArgs e) {
             //TODO: add dictionary<TypeEntity, FuncUpdateEntity>
             var point = dgvStudents.PointToClient(cmTableAction.Bounds.Location);
             var info = dgvStudents.HitTest(point.X, point.Y);
@@ -49,7 +61,7 @@ namespace NHibernateLab {
             MessageBox.Show("Изменить");
         }
 
-        private async void удалитьToolStripMenuItem_Click(object sender, EventArgs e) {
+        private async void removeRecordToolStripMenuItem_Click(object sender, EventArgs e) {
             //TODO: add dictionary<TypeEntity, FuncDeleteEntity>
             var point = dgvStudents.PointToClient(cmTableAction.Bounds.Location);
             var info = dgvStudents.HitTest(point.X, point.Y).RowIndex;
@@ -85,7 +97,7 @@ namespace NHibernateLab {
             cmTableAction.Show(dgvStudents, new Point(e.Y, e.Y));
         }
 
-        private void добавитьНовогоСтудентаToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void addRecordToolStripMenuItem_Click(object sender, EventArgs e) {
             //TODO: add dictionary<TypeEntity, FuncCreateEntity>
             var createNewStudentForm = new AddStudentForm(_updateForm);
             createNewStudentForm.ShowDialog();
@@ -122,71 +134,75 @@ namespace NHibernateLab {
             _activeDataGrid.DataSource = await updateGridMethods[_activeDataGridType]();
         }
 
+        #region Get entity methods
+
         public async Task<List<object>> GetAllStudentForGrid() {
             var service = new StudentService();
-            var result = await service.GetAllAsync();
+            _students = await service.GetAllAsync();
 
-            return result.Select((x, i) => (object)new {
+            return _students.Select((x, i) => (object)new {
                 Номер = i + 1,
                 Фамилия = x.LastName,
                 Имя = x.FirstName,
                 Отчество = x.Patronymic,
                 Номер_зачётной_книжки = x.CreditBookNumber,
-                Група = x.Group.Name,
+                Группа = x.Group.Name,
                 Факультет = x.Faculty.Name
             }).ToList();
         }
 
         public async Task<List<object>> GetAllTeacherForGrid() {
-            var service = new StudentService();
-            var result = await service.GetAllAsync();
+            var service = new TeacherService();
+            _teachers = await service.GetAllAsync();
 
-            return result.Select((x, i) => (object)new {
+            return _teachers.Select((x, i) => (object)new {
                 Номер = i + 1,
                 Фамилия = x.LastName,
                 Имя = x.FirstName,
                 Отчество = x.Patronymic,
-                Номер_зачётной_книжки = x.CreditBookNumber,
-                Група = x.Group.Name,
-                Факультет = x.Faculty.Name
+                Кафедра = x.Department.Name,
+                Степень = x.Degree.Name,
+                Звание = x.Rank.Name
             }).ToList();
         }
 
         public async Task<List<object>> GetAllTopicForGrid() {
-            var service = new StudentService();
-            var result = await service.GetAllAsync();
+            //var service = new TopicService();
+            //_topics = await service.GetAllAsync();
 
-            return result.Select((x, i) => (object)new {
-                Номер = i + 1,
-                Фамилия = x.LastName,
-                Имя = x.FirstName,
-                Отчество = x.Patronymic,
-                Номер_зачётной_книжки = x.CreditBookNumber,
-                Група = x.Group.Name,
-                Факультет = x.Faculty.Name
-            }).ToList();
+            //return _topics.Select((x, i) => (object)new {
+            //    Номер = i + 1,
+            //    Фамилия = x.LastName,
+            //    Имя = x.FirstName,
+            //    Отчество = x.Patronymic,
+            //    Номер_зачётной_книжки = x.CreditBookNumber,
+            //    Група = x.Group.Name,
+            //    Факультет = x.Faculty.Name
+            //}).ToList();
+            return null;
         }
 
         public async Task<List<object>> GetAllMarksForGrid() {
-            var service = new StudentService();
-            var result = await service.GetAllAsync();
+            //var service = new MarkService();
+            //_marks = await service.GetAllAsync();
 
-            return result.Select((x, i) => (object)new {
-                Номер = i + 1,
-                Фамилия = x.LastName,
-                Имя = x.FirstName,
-                Отчество = x.Patronymic,
-                Номер_зачётной_книжки = x.CreditBookNumber,
-                Група = x.Group.Name,
-                Факультет = x.Faculty.Name
-            }).ToList();
+            //return _marks.Select((x, i) => (object)new {
+            //    Номер = i + 1,
+            //    Фамилия = x.LastName,
+            //    Имя = x.FirstName,
+            //    Отчество = x.Patronymic,
+            //    Номер_зачётной_книжки = x.CreditBookNumber,
+            //    Група = x.Group.Name,
+            //    Факультет = x.Faculty.Name
+            //}).ToList();
+            return null;
         }
 
         public async Task<List<object>> GetAllGroupsForGrid() {
             var service = new GroupService();
-            var result = await service.GetAllAsync();
+            _groups = await service.GetAllAsync();
 
-            return result.Select((x, i) => (object)new {
+            return _groups.Select((x, i) => (object)new {
                 Номер = i + 1,
                 Название = x.Name,
             }).ToList();
@@ -194,9 +210,9 @@ namespace NHibernateLab {
 
         public async Task<List<object>> GetAllFacultyForGrid() {
             var service = new FacultyService();
-            var result = await service.GetAllAsync();
+            _faculties = await service.GetAllAsync();
 
-            return result.Select((x, i) => (object)new {
+            return _faculties.Select((x, i) => (object)new {
                 Номер = i + 1,
                 Название = x.Name,
             }).ToList();
@@ -204,9 +220,9 @@ namespace NHibernateLab {
 
         public async Task<List<object>> GetAllDepartmentsForGrid() {
             var service = new DepartmentService();
-            var result = await service.GetAllAsync();
+            _departments = await service.GetAllAsync();
 
-            return result.Select((x, i) => (object)new {
+            return _departments.Select((x, i) => (object)new {
                 Номер = i + 1,
                 Название = x.Name,
             }).ToList();
@@ -214,9 +230,9 @@ namespace NHibernateLab {
 
         public async Task<List<object>> GetAllRanksForGrid() {
             var service = new RankService();
-            var result = await service.GetAllAsync();
+            _ranks = await service.GetAllAsync();
 
-            return result.Select((x, i) => (object)new {
+            return _ranks.Select((x, i) => (object)new {
                 Номер = i + 1,
                 Название = x.Name,
             }).ToList();
@@ -224,13 +240,29 @@ namespace NHibernateLab {
 
         public async Task<List<object>> GetAllDegreesForGrid() {
             var service = new DegreeService();
-            var result = await service.GetAllAsync();
+            _degrees = await service.GetAllAsync();
 
-            return result.Select((x, i) => (object)new {
+            return _degrees.Select((x, i) => (object)new {
                 Номер = i + 1,
                 Название = x.Name,
             }).ToList();
         }
+
+        #endregion
+
+        #region Delete entity methods
+
+        #endregion
+
+        #region Create entity methods
+
+        #endregion
+
+        #region Update entity methods
+
+        #endregion
+
+        #region TabViewer tab changed events
 
         private void studentsPage_Enter(object sender, EventArgs e) {
             _activeDataGridType = Constants.StudentType;
@@ -277,5 +309,7 @@ namespace NHibernateLab {
             _activeDataGridType = Constants.MarkType;
             _updateForm?.Invoke();
         }
+
+        #endregion
     }
 }
