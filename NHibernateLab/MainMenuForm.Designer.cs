@@ -47,6 +47,8 @@
             this.cmiUpdateRecord = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiRemoveRecord = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiAddRecord = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.txtFilter = new System.Windows.Forms.TextBox();
             this.tbcDataViews.SuspendLayout();
             this.studentsPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStudents)).BeginInit();
@@ -80,10 +82,10 @@
             this.tbcDataViews.Controls.Add(this.departmentPage);
             this.tbcDataViews.Controls.Add(this.degreePage);
             this.tbcDataViews.Controls.Add(this.rankPage);
-            this.tbcDataViews.Location = new System.Drawing.Point(12, 12);
+            this.tbcDataViews.Location = new System.Drawing.Point(12, 46);
             this.tbcDataViews.Name = "tbcDataViews";
             this.tbcDataViews.SelectedIndex = 0;
-            this.tbcDataViews.Size = new System.Drawing.Size(776, 426);
+            this.tbcDataViews.Size = new System.Drawing.Size(776, 392);
             this.tbcDataViews.TabIndex = 0;
             // 
             // studentsPage
@@ -92,7 +94,7 @@
             this.studentsPage.Location = new System.Drawing.Point(4, 25);
             this.studentsPage.Name = "studentsPage";
             this.studentsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.studentsPage.Size = new System.Drawing.Size(768, 397);
+            this.studentsPage.Size = new System.Drawing.Size(768, 363);
             this.studentsPage.TabIndex = 0;
             this.studentsPage.Text = "Студенты";
             this.studentsPage.UseVisualStyleBackColor = true;
@@ -314,11 +316,30 @@
             this.cmiAddRecord.Text = "Добавить новую запись";
             this.cmiAddRecord.Click += new System.EventHandler(this.addRecordToolStripMenuItem_Click);
             // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(221, 12);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(109, 23);
+            this.btnSearch.TabIndex = 4;
+            this.btnSearch.Text = "Найти записи";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // txtFilter
+            // 
+            this.txtFilter.Location = new System.Drawing.Point(51, 12);
+            this.txtFilter.Name = "txtFilter";
+            this.txtFilter.Size = new System.Drawing.Size(152, 22);
+            this.txtFilter.TabIndex = 3;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnSearch);
+            this.Controls.Add(this.txtFilter);
             this.Controls.Add(this.tbcDataViews);
             this.Name = "MainForm";
             this.Text = "Lab 2";
@@ -343,6 +364,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvRanks)).EndInit();
             this.cmTableAction.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -371,6 +393,8 @@
         private System.Windows.Forms.DataGridView dgvDegrees;
         private System.Windows.Forms.TabPage rankPage;
         private System.Windows.Forms.DataGridView dgvRanks;
+        private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.TextBox txtFilter;
     }
 }
 

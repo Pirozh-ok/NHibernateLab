@@ -1,6 +1,7 @@
 ﻿using NHibernateLab.Entities;
 using NHibernateLab.NHibernate;
 using NHibernateLab.Services.Implementations;
+using NHibernateLab.UI;
 using NHibernateLab.UI.Forms;
 using System;
 using System.Collections.Generic;
@@ -53,12 +54,16 @@ namespace NHibernateLab {
             _updateForm += UpdateForm;
         }
 
-        private void updateRecordToolStripMenuItem_Click(object sender, EventArgs e) {
+        private async void updateRecordToolStripMenuItem_Click(object sender, EventArgs e) {
             //TODO: add dictionary<TypeEntity, FuncUpdateEntity>
             var point = dgvStudents.PointToClient(cmTableAction.Bounds.Location);
             var info = dgvStudents.HitTest(point.X, point.Y);
 
-            MessageBox.Show("Изменить");
+            _faculties = _faculties ?? await GetFacultiesAsync();
+            _groups = _groups ?? await GetGroupsAsync();
+
+            var updateStudentForm = new UpdateStudentForm(_students[info.RowIndex], _faculties, _groups, _updateForm);
+            updateStudentForm.ShowDialog();
         }
 
         private async void removeRecordToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -129,6 +134,10 @@ namespace NHibernateLab {
                 case Constants.RankType:
                     _activeDataGrid = dgvRanks;
                     break;
+                default: {
+                        _activeDataGrid = dgvStudents;
+                        break;
+                }
             }
 
             _activeDataGrid.DataSource = await updateGridMethods[_activeDataGridType]();
@@ -137,8 +146,7 @@ namespace NHibernateLab {
         #region Get entity methods
 
         public async Task<List<object>> GetAllStudentForGrid() {
-            var service = new StudentService();
-            _students = await service.GetAllAsync();
+            _students = await GetStudentsAsync();
 
             return _students.Select((x, i) => (object)new {
                 Номер = i + 1,
@@ -152,8 +160,7 @@ namespace NHibernateLab {
         }
 
         public async Task<List<object>> GetAllTeacherForGrid() {
-            var service = new TeacherService();
-            _teachers = await service.GetAllAsync();
+            _teachers = await GetTeachersAsync();
 
             return _teachers.Select((x, i) => (object)new {
                 Номер = i + 1,
@@ -199,8 +206,7 @@ namespace NHibernateLab {
         }
 
         public async Task<List<object>> GetAllGroupsForGrid() {
-            var service = new GroupService();
-            _groups = await service.GetAllAsync();
+            _groups = await GetGroupsAsync();
 
             return _groups.Select((x, i) => (object)new {
                 Номер = i + 1,
@@ -209,8 +215,7 @@ namespace NHibernateLab {
         }
 
         public async Task<List<object>> GetAllFacultyForGrid() {
-            var service = new FacultyService();
-            _faculties = await service.GetAllAsync();
+            _faculties = await GetFacultiesAsync();
 
             return _faculties.Select((x, i) => (object)new {
                 Номер = i + 1,
@@ -219,8 +224,7 @@ namespace NHibernateLab {
         }
 
         public async Task<List<object>> GetAllDepartmentsForGrid() {
-            var service = new DepartmentService();
-            _departments = await service.GetAllAsync();
+            _departments = await GetDepartmentsAsync();
 
             return _departments.Select((x, i) => (object)new {
                 Номер = i + 1,
@@ -229,8 +233,7 @@ namespace NHibernateLab {
         }
 
         public async Task<List<object>> GetAllRanksForGrid() {
-            var service = new RankService();
-            _ranks = await service.GetAllAsync();
+            _ranks = await GetRanksAsync();
 
             return _ranks.Select((x, i) => (object)new {
                 Номер = i + 1,
@@ -239,13 +242,57 @@ namespace NHibernateLab {
         }
 
         public async Task<List<object>> GetAllDegreesForGrid() {
-            var service = new DegreeService();
-            _degrees = await service.GetAllAsync();
+            _degrees = await GetDegreesAsync();
 
             return _degrees.Select((x, i) => (object)new {
                 Номер = i + 1,
                 Название = x.Name,
             }).ToList();
+        }
+
+        public async Task<IList<Student>> GetStudentsAsync() {
+            var service = new StudentService();
+            return await service.GetAllAsync();
+        }
+
+        public async Task<IList<Teacher>> GetTeachersAsync() {
+            var service = new TeacherService();
+            return await service.GetAllAsync();
+        }
+
+        //public async Task<IList<Mark>> GetMarksAsync() {
+        //    var service = new MarkService();
+        //    return await service.GetAllAsync();
+        //}
+
+        //public async Task<IList<Topic>> GetTopicsAsync() {
+        //    var service = new TopicService();
+        //    return await service.GetAllAsync();
+        //}
+
+        public async Task<IList<Faculty>> GetFacultiesAsync() {
+            var service = new FacultyService();
+            return await service.GetAllAsync();
+        }
+
+        public async Task<IList<Group>> GetGroupsAsync() {
+            var service = new GroupService();
+            return await service.GetAllAsync();
+        }
+
+        public async Task<IList<Department>> GetDepartmentsAsync() {
+            var service = new DepartmentService();
+            return await service.GetAllAsync();
+        }
+
+        public async Task<IList<Degree>> GetDegreesAsync() {
+            var service = new DegreeService();
+            return await service.GetAllAsync();
+        }
+
+        public async Task<IList<Rank>> GetRanksAsync() {
+            var service = new RankService();
+            return await service.GetAllAsync();
         }
 
         #endregion
@@ -259,6 +306,10 @@ namespace NHibernateLab {
         #endregion
 
         #region Update entity methods
+
+        public async Task UpdateStudent() {
+
+        }
 
         #endregion
 
@@ -311,5 +362,13 @@ namespace NHibernateLab {
         }
 
         #endregion
+
+        private void btnSearch_Click(object sender, EventArgs e) {
+            var filter = txtFilter.Text;
+
+            if (string.IsNullOrEmpty(filter)) {
+                MessageBox.Show();
+            }
+        }
     }
 }

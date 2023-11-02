@@ -21,7 +21,8 @@ namespace NHibernateLab.Services.Implementations {
             using (ISession session = NHibernateHelper.OpenSession()) {
                 string hql = "FROM Student s " +
              "LEFT JOIN FETCH s.Faculty f " +
-             "LEFT JOIN FETCH s.Group g ";
+             "LEFT JOIN FETCH s.Group g " +
+             "ORDER BY s.CreditBookNumber";
 
                 IQuery query = session.CreateQuery(hql);
                 return await query.ListAsync<Student>();
@@ -53,17 +54,17 @@ namespace NHibernateLab.Services.Implementations {
              "SET s.FirstName = :newFirstName, " +
              "s.LastName = :newLastName, " +
              "s.Patronymic = :newPatronymic, " +
-             "s.FacultyId = :newFaculty " +
-             "s.GroupId = :newGroup " +
+             "s.Faculty = :newFaculty, " +
+             "s.Group = :newGroup " +
              "WHERE s.CreditBookNumber = :creditBookNumber";
 
                 IQuery query = session.CreateQuery(hql);
                 query.SetString("newFirstName", entity.FirstName);
                 query.SetString("newLastName", entity.LastName);
                 query.SetString("newPatronymic", entity.Patronymic);
+                query.SetEntity("newFaculty", entity.Faculty);
+                query.SetEntity("newGroup", entity.Group);
                 query.SetInt32("creditBookNumber", entity.CreditBookNumber);
-                query.SetInt32("newFaculty", entity.Faculty.Id);
-                query.SetInt32("newGroup", entity.Group.Id);
 
                 int updatedCount = await query.ExecuteUpdateAsync();
             }

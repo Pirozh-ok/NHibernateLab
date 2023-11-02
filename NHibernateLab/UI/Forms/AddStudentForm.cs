@@ -50,7 +50,7 @@ namespace NHibernateLab.UI.Forms {
 
                 await studentService.CreateAsync(student);
 
-                MessageBox.Show(MessagesConstants.StudentSucessAdded);
+                MessageBox.Show(MessagesConstants.STUDENT_SUCCESS_ADDED);
                 _updateEvent.Invoke();
                 Close();
             }

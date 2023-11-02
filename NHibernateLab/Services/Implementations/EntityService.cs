@@ -25,7 +25,7 @@ namespace NHibernateLab.Services.Implementations {
 
         public virtual async Task<IList<TEntity>> GetAllAsync() {
             using (ISession session = NHibernateHelper.OpenSession()) {
-                string hql = $"FROM {EntityType}";
+                string hql = $"FROM {EntityType} ORDER BY Id";
                 IQuery query = session.CreateQuery(hql);
                 return await query.ListAsync<TEntity>();
             }
