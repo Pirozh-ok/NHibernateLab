@@ -2,12 +2,6 @@
 
 namespace NHibernateLab.UI {
     public static class ValidateHelper {
-        //public (bool, string) IsAllowValueString(string value, int minLen, int maxLen) {
-        //    if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value)) {
-        //        return (false, Mes)
-        //    }
-        //}
-
         public static bool IsValidName(string name) {
             string pattern = @"^[a-zA-Z'-]+$";
             return Regex.IsMatch(name, pattern);

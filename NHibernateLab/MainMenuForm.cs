@@ -367,7 +367,7 @@ namespace NHibernateLab {
             var filter = txtFilter.Text;
 
             if (string.IsNullOrEmpty(filter)) {
-                MessageBox.Show();
+                MessageBox.Show("Фильтр пустой");
             }
         }
     }

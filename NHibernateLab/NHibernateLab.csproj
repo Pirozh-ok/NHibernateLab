@@ -219,6 +219,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\IEntity.cs" />
+    <Compile Include="UI\Forms\ICreateUpdateForm.cs" />
+    <Compile Include="Validators\IValidator.cs" />
+    <Compile Include="Validators\StudentValidator.cs" />
+    <Compile Include="Validators\ValidateResult.cs" />
     <Compile Include="NHibernate\Constants.cs" />
     <Compile Include="NHibernate\EntitiesMaps\DegreeMap.cs" />
     <Compile Include="NHibernate\EntitiesMaps\DepartmentMap.cs" />
@@ -269,7 +273,7 @@
       <DependentUpon>UpdateStudentForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MessagesConstants.cs" />
-    <Compile Include="UI\ValidateHelper.cs" />
+    <Compile Include="Validators\ValidateHelper.cs" />
     <EmbeddedResource Include="MainMenuForm.resx">
       <DependentUpon>MainMenuForm.cs</DependentUpon>
     </EmbeddedResource>
