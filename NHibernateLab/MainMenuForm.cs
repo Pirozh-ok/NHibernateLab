@@ -13,8 +13,8 @@ namespace NHibernateLab {
     public partial class MainForm : Form {
         private event Action _updateForm;
         private DataGridView _activeDataGrid;
-        private EntitiesType _activeDataGridType;
-        private Dictionary<EntitiesType, Func<Task<List<object>>>> updateGridMethods;
+        private EntityType _activeDataGridType;
+        private Dictionary<EntityType, Func<Task<List<object>>>> updateGridMethods;
 
         private IList<Student> _students;
         private IList<Teacher> _teachers;
@@ -29,16 +29,16 @@ namespace NHibernateLab {
         public MainForm() {
             InitializeComponent();
 
-            updateGridMethods = new Dictionary<EntitiesType, Func<Task<List<object>>>> {
-                { EntitiesType.StudentType, GetAllStudentForGrid },
-                { EntitiesType.TeacherType, GetAllTeacherForGrid },
-                { EntitiesType.TopicType, GetAllTopicForGrid },
-                { EntitiesType.MarkType, GetAllMarksForGrid },
-                { EntitiesType.DegreeType, GetAllDegreesForGrid},
-                { EntitiesType.RankType, GetAllRanksForGrid},
-                { EntitiesType.DepartmentType, GetAllDepartmentsForGrid},
-                { EntitiesType.FacultyType, GetAllFacultyForGrid},
-                { EntitiesType.GroupType, GetAllGroupsForGrid}
+            updateGridMethods = new Dictionary<EntityType, Func<Task<List<object>>>> {
+                { EntityType.Student, GetAllStudentForGrid },
+                { EntityType.Teacher, GetAllTeacherForGrid },
+                { EntityType.Topic, GetAllTopicForGrid },
+                { EntityType.Mark, GetAllMarksForGrid },
+                { EntityType.Degree, GetAllDegreesForGrid},
+                { EntityType.Rank, GetAllRanksForGrid},
+                { EntityType.Department, GetAllDepartmentsForGrid},
+                { EntityType.Faculty, GetAllFacultyForGrid},
+                { EntityType.Group, GetAllGroupsForGrid}
             };
 
             Load += Form_Load;
@@ -47,7 +47,7 @@ namespace NHibernateLab {
         private async void Form_Load(object sender, EventArgs e) {
             dgvStudents.DataSource = await GetAllStudentForGrid();
             _activeDataGrid = dgvStudents;
-            _activeDataGridType = EntitiesType.StudentType;
+            _activeDataGridType = EntityType.Student;
 
             _updateForm += UpdateForm;
         }
@@ -108,28 +108,28 @@ namespace NHibernateLab {
 
         private async void UpdateForm() {
             switch (_activeDataGridType) {
-                case EntitiesType.TeacherType:
+                case EntityType.Teacher:
                     _activeDataGrid = dgvTeachers;
                     break;
-                case EntitiesType.MarkType:
+                case EntityType.Mark:
                     _activeDataGrid = dgvMarks;
                     break;
-                case EntitiesType.TopicType:
+                case EntityType.Topic:
                     _activeDataGrid = dgvTopics;
                     break;
-                case EntitiesType.GroupType:
+                case EntityType.Group:
                     _activeDataGrid = dgvGroups;
                     break;
-                case EntitiesType.FacultyType:
+                case EntityType.Faculty:
                     _activeDataGrid = dgvFaculties;
                     break;
-                case EntitiesType.DepartmentType:
+                case EntityType.Department:
                     _activeDataGrid = dgvDepartments;
                     break;
-                case EntitiesType.DegreeType:
+                case EntityType.Degree:
                     _activeDataGrid = dgvDegrees;
                     break;
-                case EntitiesType.RankType:
+                case EntityType.Rank:
                     _activeDataGrid = dgvRanks;
                     break;
                 default: {
@@ -314,48 +314,48 @@ namespace NHibernateLab {
         #region TabViewer tab changed events
 
         private void studentsPage_Enter(object sender, EventArgs e) {
-            _activeDataGridType = EntitiesType.StudentType;
+            _activeDataGridType = EntityType.Student;
             _updateForm?.Invoke();
         }
 
         private void teachersPage_Enter(object sender, EventArgs e) {
-            _activeDataGridType = EntitiesType.TeacherType;
+            _activeDataGridType = EntityType.Teacher;
             _updateForm?.Invoke();
         }
 
         private void topicsPage_Enter(object sender, EventArgs e) {
-            _activeDataGridType = EntitiesType.TopicType;
+            _activeDataGridType = EntityType.Topic;
             _updateForm?.Invoke();
         }
 
 
         private void groupPage_Enter(object sender, EventArgs e) {
-            _activeDataGridType = EntitiesType.GroupType;
+            _activeDataGridType = EntityType.Group;
             _updateForm?.Invoke();
         }
 
         private void facultyPage_Enter(object sender, EventArgs e) {
-            _activeDataGridType = EntitiesType.FacultyType;
+            _activeDataGridType = EntityType.Faculty;
             _updateForm?.Invoke();
         }
 
         private void departmentPage_Enter(object sender, EventArgs e) {
-            _activeDataGridType = EntitiesType.DepartmentType;
+            _activeDataGridType = EntityType.Department;
             _updateForm?.Invoke();
         }
 
         private void degreePage_Enter(object sender, EventArgs e) {
-            _activeDataGridType = EntitiesType.DegreeType;
+            _activeDataGridType = EntityType.Degree;
             _updateForm?.Invoke();
         }
 
         private void rankPage_Enter(object sender, EventArgs e) {
-            _activeDataGridType = EntitiesType.RankType;
+            _activeDataGridType = EntityType.Rank;
             _updateForm?.Invoke();
         }
 
         private void marksPage_Enter(object sender, EventArgs e) {
-            _activeDataGridType = EntitiesType.MarkType;
+            _activeDataGridType = EntityType.Mark;
             _updateForm?.Invoke();
         }
 

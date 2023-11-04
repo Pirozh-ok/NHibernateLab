@@ -3,16 +3,16 @@
         public const int NameMaxLen = 40;
         public const int NameMinLen = 2;
 
-        public enum EntitiesType {
-            StudentType,
-            TeacherType,
-            TopicType,
-            MarkType,
-            GroupType,
-            DepartmentType,
-            FacultyType,
-            RankType,
-            DegreeType
+        public enum EntityType {
+            Student,
+            Teacher,
+            Topic,
+            Mark,
+            Group,
+            Department,
+            Faculty,
+            Rank,
+            Degree
         };
     }
 }
