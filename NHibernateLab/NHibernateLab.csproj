@@ -219,6 +219,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\IEntity.cs" />
+    <Compile Include="UI\Forms\AddDictionaryEntityForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\AddDictionaryEntityForm.Designer.cs">
+      <DependentUpon>AddDictionaryEntityForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\ICreateUpdateForm.cs" />
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Validators\StudentValidator.cs" />
