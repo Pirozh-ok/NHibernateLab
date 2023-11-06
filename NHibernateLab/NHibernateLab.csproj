@@ -218,7 +218,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\IEntity.cs" />
+    <Compile Include="Entities\Base\BaseDictionaryEntity.cs" />
+    <Compile Include="Entities\Base\IEntity.cs" />
+    <Compile Include="Services\Implementations\MarkService.cs" />
+    <Compile Include="Services\Implementations\TopicService.cs" />
     <Compile Include="UI\Forms\AddDictionaryEntityForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -226,6 +229,7 @@
       <DependentUpon>AddDictionaryEntityForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Forms\ICreateUpdateForm.cs" />
+    <Compile Include="Validators\DictionaryEntityValidator.cs" />
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Validators\StudentValidator.cs" />
     <Compile Include="Validators\ValidateResult.cs" />
@@ -292,6 +296,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\Forms\AddDictionaryEntityForm.resx">
+      <DependentUpon>AddDictionaryEntityForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\AddStudentForm.resx">
       <DependentUpon>AddStudentForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -117,7 +117,7 @@
             this.teachersPage.Location = new System.Drawing.Point(4, 25);
             this.teachersPage.Name = "teachersPage";
             this.teachersPage.Padding = new System.Windows.Forms.Padding(3);
-            this.teachersPage.Size = new System.Drawing.Size(768, 397);
+            this.teachersPage.Size = new System.Drawing.Size(768, 363);
             this.teachersPage.TabIndex = 1;
             this.teachersPage.Text = "Преподаватели";
             this.teachersPage.UseVisualStyleBackColor = true;
@@ -132,13 +132,14 @@
             this.dgvTeachers.RowTemplate.Height = 24;
             this.dgvTeachers.Size = new System.Drawing.Size(700, 350);
             this.dgvTeachers.TabIndex = 0;
+            this.dgvTeachers.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvTeachers_MouseDown);
             // 
             // topicsPage
             // 
             this.topicsPage.Controls.Add(this.dgvTopics);
             this.topicsPage.Location = new System.Drawing.Point(4, 25);
             this.topicsPage.Name = "topicsPage";
-            this.topicsPage.Size = new System.Drawing.Size(768, 397);
+            this.topicsPage.Size = new System.Drawing.Size(768, 363);
             this.topicsPage.TabIndex = 2;
             this.topicsPage.Text = "Темы";
             this.topicsPage.UseVisualStyleBackColor = true;
@@ -153,13 +154,14 @@
             this.dgvTopics.RowTemplate.Height = 24;
             this.dgvTopics.Size = new System.Drawing.Size(700, 350);
             this.dgvTopics.TabIndex = 0;
+            this.dgvTopics.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvTopics_MouseDown);
             // 
             // marksPage
             // 
             this.marksPage.Controls.Add(this.dgvMarks);
             this.marksPage.Location = new System.Drawing.Point(4, 25);
             this.marksPage.Name = "marksPage";
-            this.marksPage.Size = new System.Drawing.Size(768, 397);
+            this.marksPage.Size = new System.Drawing.Size(768, 363);
             this.marksPage.TabIndex = 3;
             this.marksPage.Text = "Оценки";
             this.marksPage.UseVisualStyleBackColor = true;
@@ -174,6 +176,7 @@
             this.dgvMarks.RowTemplate.Height = 24;
             this.dgvMarks.Size = new System.Drawing.Size(700, 350);
             this.dgvMarks.TabIndex = 0;
+            this.dgvMarks.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvMarks_MouseDown);
             // 
             // groupPage
             // 
@@ -181,7 +184,7 @@
             this.groupPage.Location = new System.Drawing.Point(4, 25);
             this.groupPage.Name = "groupPage";
             this.groupPage.Padding = new System.Windows.Forms.Padding(3);
-            this.groupPage.Size = new System.Drawing.Size(768, 397);
+            this.groupPage.Size = new System.Drawing.Size(768, 363);
             this.groupPage.TabIndex = 4;
             this.groupPage.Text = "Группы";
             this.groupPage.UseVisualStyleBackColor = true;
@@ -196,6 +199,7 @@
             this.dgvGroups.RowTemplate.Height = 24;
             this.dgvGroups.Size = new System.Drawing.Size(700, 350);
             this.dgvGroups.TabIndex = 1;
+            this.dgvGroups.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvGroups_MouseDown);
             // 
             // facultyPage
             // 
@@ -203,7 +207,7 @@
             this.facultyPage.Location = new System.Drawing.Point(4, 25);
             this.facultyPage.Name = "facultyPage";
             this.facultyPage.Padding = new System.Windows.Forms.Padding(3);
-            this.facultyPage.Size = new System.Drawing.Size(768, 397);
+            this.facultyPage.Size = new System.Drawing.Size(768, 363);
             this.facultyPage.TabIndex = 5;
             this.facultyPage.Text = "Факультеты";
             this.facultyPage.UseVisualStyleBackColor = true;
@@ -218,6 +222,7 @@
             this.dgvFaculties.RowTemplate.Height = 24;
             this.dgvFaculties.Size = new System.Drawing.Size(700, 350);
             this.dgvFaculties.TabIndex = 1;
+            this.dgvFaculties.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvFaculties_MouseDown);
             // 
             // departmentPage
             // 
@@ -225,7 +230,7 @@
             this.departmentPage.Location = new System.Drawing.Point(4, 25);
             this.departmentPage.Name = "departmentPage";
             this.departmentPage.Padding = new System.Windows.Forms.Padding(3);
-            this.departmentPage.Size = new System.Drawing.Size(768, 397);
+            this.departmentPage.Size = new System.Drawing.Size(768, 363);
             this.departmentPage.TabIndex = 6;
             this.departmentPage.Text = "Кафедры";
             this.departmentPage.UseVisualStyleBackColor = true;
@@ -240,6 +245,7 @@
             this.dgvDepartments.RowTemplate.Height = 24;
             this.dgvDepartments.Size = new System.Drawing.Size(700, 350);
             this.dgvDepartments.TabIndex = 1;
+            this.dgvDepartments.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvDepartments_MouseDown);
             // 
             // degreePage
             // 
@@ -247,7 +253,7 @@
             this.degreePage.Location = new System.Drawing.Point(4, 25);
             this.degreePage.Name = "degreePage";
             this.degreePage.Padding = new System.Windows.Forms.Padding(3);
-            this.degreePage.Size = new System.Drawing.Size(768, 397);
+            this.degreePage.Size = new System.Drawing.Size(768, 363);
             this.degreePage.TabIndex = 7;
             this.degreePage.Text = "Степени";
             this.degreePage.UseVisualStyleBackColor = true;
@@ -262,6 +268,7 @@
             this.dgvDegrees.RowTemplate.Height = 24;
             this.dgvDegrees.Size = new System.Drawing.Size(700, 350);
             this.dgvDegrees.TabIndex = 1;
+            this.dgvDegrees.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvDegrees_MouseDown);
             // 
             // rankPage
             // 
@@ -269,7 +276,7 @@
             this.rankPage.Location = new System.Drawing.Point(4, 25);
             this.rankPage.Name = "rankPage";
             this.rankPage.Padding = new System.Windows.Forms.Padding(3);
-            this.rankPage.Size = new System.Drawing.Size(768, 397);
+            this.rankPage.Size = new System.Drawing.Size(768, 363);
             this.rankPage.TabIndex = 8;
             this.rankPage.Text = "Звания";
             this.rankPage.UseVisualStyleBackColor = true;
@@ -284,6 +291,7 @@
             this.dgvRanks.RowTemplate.Height = 24;
             this.dgvRanks.Size = new System.Drawing.Size(700, 350);
             this.dgvRanks.TabIndex = 1;
+            this.dgvRanks.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvRanks_MouseDown);
             // 
             // cmTableAction
             // 

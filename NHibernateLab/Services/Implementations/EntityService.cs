@@ -14,7 +14,7 @@ namespace NHibernateLab.Services.Implementations {
             }
         }
 
-        public async Task DeleteAsync(int deleteEntityId) {
+        public virtual async Task DeleteAsync(int deleteEntityId) {
             using (ISession session = NHibernateHelper.OpenSession()) {
                 string hql = $"DELETE FROM {EntityType} WHERE id = :entityId";
                 var query = session.CreateQuery(hql);

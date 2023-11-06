@@ -16,5 +16,14 @@ namespace NHibernateLab.Services.Implementations {
                 await query.ExecuteUpdateAsync();
             }
         }
+
+        public override async Task DeleteAsync(int deleteEntityId) {
+            using (ISession session = NHibernateHelper.OpenSession()) {
+                string sql = $"DELETE FROM students_groups WHERE id = :entityId";
+                var query = session.CreateSQLQuery(sql);
+                query.SetInt32("entityId", deleteEntityId);
+                int rowsAffected = await query.ExecuteUpdateAsync();
+            }
+        }
     }
 }

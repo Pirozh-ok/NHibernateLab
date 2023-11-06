@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 namespace NHibernateLab.UI.Forms {
     public partial class UpdateStudentForm : Form {
+        private Student _student;
         private IList<Faculty> _faculties;
         private IList<Group> _groups;
 
@@ -17,6 +18,7 @@ namespace NHibernateLab.UI.Forms {
 
         public UpdateStudentForm(Student student, IList<Faculty> faculties, IList<Group> groups, Action updateEvent) {
             InitializeComponent();
+            _student = student;
             _faculties = faculties;
             _groups = groups;
             _updateEvent = updateEvent;
@@ -41,6 +43,7 @@ namespace NHibernateLab.UI.Forms {
         private async void btnUpdate_Click(object sender, EventArgs e) {
             try {
                 var student = new Student() {
+                    CreditBookNumber = _student.CreditBookNumber,
                     FirstName = tbFirstName.Text,
                     LastName = tbLastName.Text,
                     Patronymic = tbPatronymic.Text,

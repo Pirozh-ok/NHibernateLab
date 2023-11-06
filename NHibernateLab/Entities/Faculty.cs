@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace NHibernateLab.Entities {
-    public class Faculty : IEntity {
-        public virtual int Id { get; set; }
-        public virtual string Name { get; set; }
-
+    public class Faculty : BaseDictionaryEntity {
         private IList<Student> _students;
         public virtual IList<Student> Students {
             get {

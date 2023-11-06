@@ -32,14 +32,13 @@ namespace NHibernateLab.Services.Implementations {
         public async override Task<IList<Student>> SearchAsync(string text) {
             using (ISession session = NHibernateHelper.OpenSession()) {
                 string hql = "FROM Student s " +
-             "LEFT JOIN FETCH s.Faculty f " +
-             "LEFT JOIN FETCH s.Group g " +
-             "WHERE " +
-             "s.FirstName LIKE :searchText OR " +
-             "s.LastName LIKE :searchText OR " +
-             "s.Patronymic LIKE :searchText OR " +
-             "f.FacultyName LIKE :searchText OR " +
-             "g.GroupName LIKE :searchText";
+                    "LEFT JOIN FETCH s.Faculty f " +
+                    "LEFT JOIN FETCH s.Group g " +
+                    "WHERE LOWER(s.FirstName) LIKE LOWER(:searchText) OR " +
+                    "LOWER(s.LastName) LIKE LOWER(:searchText) OR " +
+                    "LOWER(s.Patronymic) LIKE LOWER(:searchText) OR " +
+                    "LOWER(f.Name) LIKE LOWER(:searchText) OR " +
+                    "LOWER(g.Name) LIKE LOWER(:searchText)";
 
                 IQuery query = session.CreateQuery(hql);
                 query.SetString("searchText", $"%{text}%");
@@ -50,23 +49,25 @@ namespace NHibernateLab.Services.Implementations {
 
         public async override Task UpdateAsync(Student entity) {
             using (ISession session = NHibernateHelper.OpenSession()) {
-                string hql = "UPDATE Student s " +
-             "SET s.FirstName = :newFirstName, " +
-             "s.LastName = :newLastName, " +
-             "s.Patronymic = :newPatronymic, " +
-             "s.Faculty = :newFaculty, " +
-             "s.Group = :newGroup " +
-             "WHERE s.CreditBookNumber = :creditBookNumber";
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    // Получите объект Student, который вы хотите обновить, например, по его идентификатору
+                    Student studentToUpdate = session.Get<Student>(entity.CreditBookNumber);
 
-                IQuery query = session.CreateQuery(hql);
-                query.SetString("newFirstName", entity.FirstName);
-                query.SetString("newLastName", entity.LastName);
-                query.SetString("newPatronymic", entity.Patronymic);
-                query.SetEntity("newFaculty", entity.Faculty);
-                query.SetEntity("newGroup", entity.Group);
-                query.SetInt32("creditBookNumber", entity.CreditBookNumber);
+                    // Внесите изменения в свойства сущности
+                    studentToUpdate.FirstName = entity.FirstName;
+                    studentToUpdate.LastName = entity.LastName;
 
-                int updatedCount = await query.ExecuteUpdateAsync();
+                    // Обновите связанные сущности, например, Faculty и Group
+                    Faculty newFaculty = session.Get<Faculty>(entity.Faculty.Id);
+                    Group newGroup = session.Get<Group>(entity.Group.Id);
+                    studentToUpdate.Faculty = newFaculty;
+                    studentToUpdate.Group = newGroup;
+
+                    // Сохраните обновленную сущность в базе данных
+                    await session.UpdateAsync(studentToUpdate);
+
+                    await transaction.CommitAsync();
+                }
             }
         }
     }

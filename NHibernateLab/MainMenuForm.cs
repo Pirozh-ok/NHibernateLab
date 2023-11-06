@@ -1,5 +1,7 @@
 ﻿using NHibernateLab.Entities;
+using NHibernateLab.NHibernate;
 using NHibernateLab.Services.Implementations;
+using NHibernateLab.UI;
 using NHibernateLab.UI.Forms;
 using System;
 using System.Collections.Generic;
@@ -7,7 +9,6 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static NHibernateLab.NHibernate.Constants;
 
 namespace NHibernateLab {
     public partial class MainForm : Form {
@@ -15,6 +16,9 @@ namespace NHibernateLab {
         private DataGridView _activeDataGrid;
         private EntityType _activeDataGridType;
         private Dictionary<EntityType, Func<Task<List<object>>>> updateGridMethods;
+        private Dictionary<EntityType, Action> createEntityMethods;
+        private Dictionary<EntityType, Action> updateEntityMethods;
+        private Dictionary<EntityType, Func<int, Task>> deleteEntityMethods;
 
         private IList<Student> _students;
         private IList<Teacher> _teachers;
@@ -41,6 +45,30 @@ namespace NHibernateLab {
                 { EntityType.Group, GetAllGroupsForGrid}
             };
 
+            createEntityMethods = new Dictionary<EntityType, Action> {
+                { EntityType.Student, CreateStudent },
+                { EntityType.Teacher, CreateTeacher },
+                { EntityType.Topic, CreateTopic },
+                { EntityType.Mark, CreateMark },
+                { EntityType.Degree, CreateDegree},
+                { EntityType.Rank, CreateRank},
+                { EntityType.Department, CreateDepartment},
+                { EntityType.Faculty, CreateFaculty},
+                { EntityType.Group, CreateGroup}
+            };
+
+            deleteEntityMethods = new Dictionary<EntityType, Func<int, Task>> {
+                { EntityType.Student, DeleteStudent },
+                { EntityType.Teacher, DeleteTeacher },
+                { EntityType.Topic, DeleteTopic },
+                { EntityType.Mark, DeleteMark },
+                { EntityType.Degree, DeleteDegree},
+                { EntityType.Rank, DeleteRank},
+                { EntityType.Department, DeleteDepartment},
+                { EntityType.Faculty, DeleteFaculty},
+                { EntityType.Group, DeleteGroup}
+            };
+
             Load += Form_Load;
         }
 
@@ -65,45 +93,14 @@ namespace NHibernateLab {
         }
 
         private async void removeRecordToolStripMenuItem_Click(object sender, EventArgs e) {
-            //TODO: add dictionary<TypeEntity, FuncDeleteEntity>
-            var point = dgvStudents.PointToClient(cmTableAction.Bounds.Location);
-            var info = dgvStudents.HitTest(point.X, point.Y).RowIndex;
+            var clickedPoint = _activeDataGrid.PointToClient(cmTableAction.Bounds.Location);
+            var rowIndex = _activeDataGrid.HitTest(clickedPoint.X, clickedPoint.Y).RowIndex;
 
-            if (int.TryParse(dgvStudents.Rows[info].Cells[4].Value.ToString(), out int deleteStudentId)) {
-                var studentService = new StudentService();
-                await studentService.DeleteAsync(deleteStudentId);
-                MessageBox.Show("Удаление студента прошло успешно!");
-                _updateForm?.Invoke();
-            }
-            else {
-                MessageBox.Show("В процессе удаления произошла ошибка");
-            }
-        }
-
-        private void dgvStudents_MouseDown(object sender, MouseEventArgs e) {
-            if (e.Button != MouseButtons.Right) {
-                return;
-            }
-
-            DataGridView dgv = (DataGridView)sender;
-
-            int rowIndex = dgv.HitTest(e.X, e.Y).RowIndex;
-
-            if (rowIndex == -1) {
-                return;
-            }
-
-            dgv.ClearSelection();
-
-            dgv.Rows[rowIndex].Selected = true;
-
-            cmTableAction.Show(dgvStudents, new Point(e.Y, e.Y));
+            await deleteEntityMethods[_activeDataGridType](rowIndex);          
         }
 
         private void addRecordToolStripMenuItem_Click(object sender, EventArgs e) {
-            //TODO: add dictionary<TypeEntity, FuncCreateEntity>
-            var createNewStudentForm = new AddStudentForm(_updateForm);
-            createNewStudentForm.ShowDialog();
+            createEntityMethods[_activeDataGridType]();
         }
 
         private async void UpdateForm() {
@@ -172,35 +169,27 @@ namespace NHibernateLab {
         }
 
         public async Task<List<object>> GetAllTopicForGrid() {
-            //var service = new TopicService();
-            //_topics = await service.GetAllAsync();
+            var service = new TopicService();
+            _topics = await service.GetAllAsync();
 
-            //return _topics.Select((x, i) => (object)new {
-            //    Номер = i + 1,
-            //    Фамилия = x.LastName,
-            //    Имя = x.FirstName,
-            //    Отчество = x.Patronymic,
-            //    Номер_зачётной_книжки = x.CreditBookNumber,
-            //    Група = x.Group.Name,
-            //    Факультет = x.Faculty.Name
-            //}).ToList();
-            return null;
+            return _topics.Select((x, i) => (object)new {
+                Номер = i + 1,
+                Название_темы = x.Name,
+                Номер_зачётной_книжки_студента = x.Student.CreditBookNumber,
+                ФИО_преподавателя = $"{x.Teacher.LastName} {x.Teacher.FirstName} {x.Teacher.Patronymic}",
+            }).ToList();
         }
 
         public async Task<List<object>> GetAllMarksForGrid() {
-            //var service = new MarkService();
-            //_marks = await service.GetAllAsync();
+            var service = new MarkService();
+            _marks = await service.GetAllAsync();
 
-            //return _marks.Select((x, i) => (object)new {
-            //    Номер = i + 1,
-            //    Фамилия = x.LastName,
-            //    Имя = x.FirstName,
-            //    Отчество = x.Patronymic,
-            //    Номер_зачётной_книжки = x.CreditBookNumber,
-            //    Група = x.Group.Name,
-            //    Факультет = x.Faculty.Name
-            //}).ToList();
-            return null;
+            return _marks.Select((x, i) => (object)new {
+                Номер = i + 1,
+                Оценка_за_экзамен = x.ExamMark,
+                Оценка_за_защиту = x.DefendMark,
+                Номер_зачётной_книжки_студента = x.Student.CreditBookNumber,
+            }).ToList();
         }
 
         public async Task<List<object>> GetAllGroupsForGrid() {
@@ -295,11 +284,161 @@ namespace NHibernateLab {
 
         #endregion
 
-        #region Delete entity methods
+
+        #region Create entity methods
+
+        private void CreateStudent() {
+            var createNewStudentForm = new AddStudentForm(_updateForm);
+            createNewStudentForm.ShowDialog();
+        }
+
+        private void CreateTeacher() {
+
+        }
+
+        private void CreateTopic() {
+
+        }
+
+        private void CreateMark() { 
+        }
+
+        private void CreateFaculty() {
+            var form = new AddDictionaryEntityForm(EntityType.Faculty, _updateForm);
+            form.ShowDialog();
+        }
+
+        private void CreateGroup() {
+            var form = new AddDictionaryEntityForm(EntityType.Group, _updateForm);
+            form.ShowDialog();
+        }
+
+        private void CreateDepartment() {
+            var form = new AddDictionaryEntityForm(EntityType.Department, _updateForm);
+            form.ShowDialog();
+        }
+
+        private void CreateDegree() {
+            var form = new AddDictionaryEntityForm(EntityType.Degree, _updateForm);
+            form.ShowDialog();
+        }
+
+        private void CreateRank() {
+            var form = new AddDictionaryEntityForm(EntityType.Rank, _updateForm);
+            form.ShowDialog();
+        }
 
         #endregion
 
-        #region Create entity methods
+        #region Delete entity methods
+
+        private async Task DeleteStudent(int deleteRowIndex) {
+            try { 
+                var studentService = new StudentService();
+                await studentService.DeleteAsync(_students[deleteRowIndex].CreditBookNumber);
+                _updateForm?.Invoke();
+                MessageBox.Show(MessagesConstants.DELETE_SUCCESS);
+            }
+            catch {
+                MessageBox.Show(MessagesConstants.DELETE_ERROR);
+            }
+        }
+
+        private async Task DeleteTeacher(int deleteRowIndex) {
+            try {
+                var teacherService = new TeacherService();
+                await teacherService.DeleteAsync(_teachers[deleteRowIndex].Id);
+                _updateForm?.Invoke();
+                MessageBox.Show(MessagesConstants.DELETE_SUCCESS);
+            }
+            catch {
+                MessageBox.Show(MessagesConstants.DELETE_ERROR);
+            }
+        }
+
+        private async Task DeleteTopic(int deleteRowIndex) {
+            try {
+                var topicService = new TopicService();
+                await topicService.DeleteAsync(_topics[deleteRowIndex].Id);
+                _updateForm?.Invoke();
+                MessageBox.Show(MessagesConstants.DELETE_SUCCESS);
+            }
+            catch {
+                MessageBox.Show(MessagesConstants.DELETE_ERROR);
+            }
+        }
+
+        private async Task DeleteMark(int deleteRowIndex) {
+            try {
+                var markService = new MarkService();
+                await markService.DeleteAsync(_marks[deleteRowIndex].Id);
+                _updateForm?.Invoke();
+                MessageBox.Show(MessagesConstants.DELETE_SUCCESS);
+            }
+            catch {
+                MessageBox.Show(MessagesConstants.DELETE_ERROR);
+            }
+        }
+
+        private async Task DeleteGroup(int deleteRowIndex) {
+            try {
+                var groupService = new GroupService();
+                await groupService.DeleteAsync(_groups[deleteRowIndex].Id);
+                _updateForm?.Invoke();
+                MessageBox.Show(MessagesConstants.DELETE_SUCCESS);
+            }
+            catch {
+                MessageBox.Show(MessagesConstants.DELETE_ERROR);
+            }
+        }
+
+        private async Task DeleteFaculty(int deleteRowIndex) {
+            try {
+                var facultyService = new FacultyService();
+                await facultyService.DeleteAsync(_faculties[deleteRowIndex].Id);
+                _updateForm?.Invoke();
+                MessageBox.Show(MessagesConstants.DELETE_SUCCESS);         
+            }
+            catch {
+                MessageBox.Show(MessagesConstants.DELETE_ERROR);
+            }
+        }
+
+        private async Task DeleteDepartment(int deleteRowIndex) {
+            try {
+                var departmentService = new DepartmentService();
+                await departmentService.DeleteAsync(_departments[deleteRowIndex].Id);
+                _updateForm?.Invoke();
+                MessageBox.Show(MessagesConstants.DELETE_SUCCESS);
+            }
+            catch {
+                MessageBox.Show(MessagesConstants.DELETE_ERROR);
+            }
+        }
+
+        private async Task DeleteDegree(int deleteRowIndex) {
+            try {
+                var degreeService = new DegreeService();
+                await degreeService.DeleteAsync(_degrees[deleteRowIndex].Id);
+                _updateForm?.Invoke();
+                MessageBox.Show(MessagesConstants.DELETE_SUCCESS);
+            }
+            catch {
+                MessageBox.Show(MessagesConstants.DELETE_ERROR);
+            }
+        }
+
+        private async Task DeleteRank(int deleteRowIndex) {
+            try {
+                var rankService = new RankService();
+                await rankService.DeleteAsync(_ranks[deleteRowIndex].Id);
+                _updateForm?.Invoke();
+                MessageBox.Show(MessagesConstants.DELETE_SUCCESS);
+            }
+            catch {
+                MessageBox.Show(MessagesConstants.DELETE_ERROR);
+            }
+        }
 
         #endregion
 
@@ -361,12 +500,93 @@ namespace NHibernateLab {
 
         #endregion
 
-        private void btnSearch_Click(object sender, EventArgs e) {
+        private async void btnSearch_Click(object sender, EventArgs e) {
             var filter = txtFilter.Text;
+            var studentService = new StudentService();
 
             if (string.IsNullOrEmpty(filter)) {
-                MessageBox.Show("Фильтр пустой");
+                dgvStudents.DataSource = (await studentService.GetAllAsync()).Select((x, i) => (object)new {
+                    Номер = i + 1,
+                    Фамилия = x.LastName,
+                    Имя = x.FirstName,
+                    Отчество = x.Patronymic,
+                    Номер_зачётной_книжки = x.CreditBookNumber,
+                    Группа = x.Group.Name,
+                    Факультет = x.Faculty.Name
+                }).ToList(); ;
+                return;
             }
+
+            var result = await studentService.SearchAsync(filter);
+            dgvStudents.DataSource = result.Select((x, i) => (object)new {
+                Номер = i + 1,
+                Фамилия = x.LastName,
+                Имя = x.FirstName,
+                Отчество = x.Patronymic,
+                Номер_зачётной_книжки = x.CreditBookNumber,
+                Группа = x.Group.Name,
+                Факультет = x.Faculty.Name
+            }).ToList();
         }
+
+        #region Handlers for grid click event
+
+        private void dgvStudents_MouseDown(object sender, MouseEventArgs e) {
+            ShowContextMenuStrip(sender, e);
+        }
+
+        private void dgvTeachers_MouseDown(object sender, MouseEventArgs e) {
+            ShowContextMenuStrip(sender, e);
+        }
+
+        private void dgvTopics_MouseDown(object sender, MouseEventArgs e) {
+            ShowContextMenuStrip(sender, e);
+        }
+
+        private void dgvMarks_MouseDown(object sender, MouseEventArgs e) {
+            ShowContextMenuStrip(sender, e);
+        }
+
+        private void dgvGroups_MouseDown(object sender, MouseEventArgs e) {
+            ShowContextMenuStrip(sender, e);
+        }
+
+        private void dgvFaculties_MouseDown(object sender, MouseEventArgs e) {
+            ShowContextMenuStrip(sender, e);
+        }
+
+        private void dgvDepartments_MouseDown(object sender, MouseEventArgs e) {
+            ShowContextMenuStrip(sender, e);
+        }
+
+        private void dgvDegrees_MouseDown(object sender, MouseEventArgs e) {
+            ShowContextMenuStrip(sender, e);
+        }
+
+        private void dgvRanks_MouseDown(object sender, MouseEventArgs e) {
+            ShowContextMenuStrip(sender, e);
+        }
+
+        private void ShowContextMenuStrip(object sender, MouseEventArgs e) {
+            if (e.Button != MouseButtons.Right) {
+                return;
+            }
+
+            DataGridView dgv = (DataGridView)sender;
+
+            int rowIndex = dgv.HitTest(e.X, e.Y).RowIndex;
+
+            if (rowIndex == -1) {
+                return;
+            }
+
+            dgv.ClearSelection();
+
+            dgv.Rows[rowIndex].Selected = true;
+
+            cmTableAction.Show(dgvStudents, new Point(e.Y, e.Y));
+        }
+
+        #endregion
     }
 }
