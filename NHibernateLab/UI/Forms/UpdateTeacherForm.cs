@@ -18,6 +18,7 @@ namespace NHibernateLab.UI.Forms {
 
         public UpdateTeacherForm(Teacher teacher, Action updateEvent) {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             _teacher = teacher;
 
             tbFirstName.Text = _teacher.FirstName;

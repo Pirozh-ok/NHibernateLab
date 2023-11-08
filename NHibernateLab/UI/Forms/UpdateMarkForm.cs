@@ -18,6 +18,7 @@ namespace NHibernateLab.UI.Forms {
 
         public UpdateMarkForm(Mark mark, Action updateEvent) {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             Load += InitialComboboxesAsync;
 
             numExamMark.Value = mark.ExamMark;

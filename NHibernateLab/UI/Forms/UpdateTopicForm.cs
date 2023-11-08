@@ -16,6 +16,8 @@ namespace NHibernateLab.UI.Forms {
 
         public UpdateTopicForm(Topic topic, Action updateEvent) {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+
             _topic = topic;
             tbTopicName.Text = topic.Name;
 

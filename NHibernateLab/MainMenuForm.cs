@@ -95,6 +95,7 @@ namespace NHibernateLab {
             };
 
             Load += Form_Load;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
         private async void Form_Load(object sender, EventArgs e) {

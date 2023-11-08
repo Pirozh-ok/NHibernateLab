@@ -16,6 +16,7 @@ namespace NHibernateLab.UI.Forms {
 
         public AddTopicForm(Action updateEvent) {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
 
             Load += InitialComboboxesAsync;
 

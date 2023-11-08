@@ -246,7 +246,6 @@
     <Compile Include="UI\Forms\AddTopicForm.Designer.cs">
       <DependentUpon>AddTopicForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Forms\ICreateUpdateForm.cs" />
     <Compile Include="UI\Forms\UpdateDictionaryEntityForm.cs">
       <SubType>Form</SubType>
     </Compile>

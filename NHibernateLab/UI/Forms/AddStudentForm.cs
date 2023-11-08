@@ -8,7 +8,7 @@ using System.Linq;
 using System.Windows.Forms;
 
 namespace NHibernateLab.UI.Forms {
-    public partial class AddStudentForm : Form, ICreateUpdateForm {
+    public partial class AddStudentForm : Form {
         private IList<Faculty> _faculties;
         private IList<Group> _groups;
         private event Action _updateEvent;
@@ -16,6 +16,7 @@ namespace NHibernateLab.UI.Forms {
 
         public AddStudentForm(Action updateEvent) {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             Load += InitialComboboxesAsync;
 
             _updateEvent = updateEvent;

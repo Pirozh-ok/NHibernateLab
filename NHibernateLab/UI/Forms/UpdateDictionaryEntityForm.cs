@@ -14,6 +14,7 @@ namespace NHibernateLab.UI.Forms {
 
         public UpdateDictionaryEntityForm(int entityId, string name, EntityType entityType, Action updateEvent) {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
 
             _entityType = entityType;
             _updateEvent = updateEvent;

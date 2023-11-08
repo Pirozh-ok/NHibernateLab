@@ -18,6 +18,8 @@ namespace NHibernateLab.UI.Forms {
 
         public UpdateStudentForm(Student student, IList<Faculty> faculties, IList<Group> groups, Action updateEvent) {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+
             _student = student;
             _faculties = faculties;
             _groups = groups;
