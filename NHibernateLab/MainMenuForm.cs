@@ -17,7 +17,7 @@ namespace NHibernateLab {
         private EntityType _activeDataGridType;
         private Dictionary<EntityType, Func<Task<List<object>>>> updateGridMethods;
         private Dictionary<EntityType, Action> createEntityMethods;
-        private Dictionary<EntityType, Action> updateEntityMethods;
+        private Dictionary<EntityType, Func<int, Task>> updateEntityMethods;
         private Dictionary<EntityType, Func<int, Task>> deleteEntityMethods;
 
         private IList<Student> _students;
@@ -69,6 +69,18 @@ namespace NHibernateLab {
                 { EntityType.Group, DeleteGroup}
             };
 
+            updateEntityMethods = new Dictionary<EntityType, Func<int, Task>> {
+                { EntityType.Student, UpdateStudent },
+                { EntityType.Teacher, UpdateTeacher },
+                { EntityType.Topic, UpdateTopic },
+                { EntityType.Mark, UpdateMark },
+                { EntityType.Degree, UpdateDegree},
+                { EntityType.Rank, UpdateRank},
+                { EntityType.Department, UpdateDepartment},
+                { EntityType.Faculty, UpdateFaculty},
+                { EntityType.Group, UpdateGroup}
+            };
+
             Load += Form_Load;
         }
 
@@ -81,15 +93,10 @@ namespace NHibernateLab {
         }
 
         private async void updateRecordToolStripMenuItem_Click(object sender, EventArgs e) {
-            //TODO: add dictionary<TypeEntity, FuncUpdateEntity>
-            var point = dgvStudents.PointToClient(cmTableAction.Bounds.Location);
-            var info = dgvStudents.HitTest(point.X, point.Y);
+            var clickedPoint = _activeDataGrid.PointToClient(cmTableAction.Bounds.Location);
+            var rowIndex = _activeDataGrid.HitTest(clickedPoint.X, clickedPoint.Y).RowIndex;
 
-            _faculties = _faculties ?? await GetFacultiesAsync();
-            _groups = _groups ?? await GetGroupsAsync();
-
-            var updateStudentForm = new UpdateStudentForm(_students[info.RowIndex], _faculties, _groups, _updateForm);
-            updateStudentForm.ShowDialog();
+            updateEntityMethods[_activeDataGridType](rowIndex);
         }
 
         private async void removeRecordToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -177,6 +184,7 @@ namespace NHibernateLab {
                 Название_темы = x.Name,
                 Номер_зачётной_книжки_студента = x.Student.CreditBookNumber,
                 ФИО_преподавателя = $"{x.Teacher.LastName} {x.Teacher.FirstName} {x.Teacher.Patronymic}",
+                ФИО_студента = $"{x.Student.LastName} {x.Student.FirstName} {x.Student.Patronymic}",
             }).ToList();
         }
 
@@ -188,6 +196,7 @@ namespace NHibernateLab {
                 Номер = i + 1,
                 Оценка_за_экзамен = x.ExamMark,
                 Оценка_за_защиту = x.DefendMark,
+                ФИО_студента = $"{x.Student.LastName} {x.Student.FirstName} {x.Student.Patronymic}",
                 Номер_зачётной_книжки_студента = x.Student.CreditBookNumber,
             }).ToList();
         }
@@ -284,7 +293,6 @@ namespace NHibernateLab {
 
         #endregion
 
-
         #region Create entity methods
 
         private void CreateStudent() {
@@ -293,7 +301,8 @@ namespace NHibernateLab {
         }
 
         private void CreateTeacher() {
-
+            var createNewTeacherForm = new AddTeacherForm(_updateForm);
+            createNewTeacherForm.ShowDialog();
         }
 
         private void CreateTopic() {
@@ -444,8 +453,49 @@ namespace NHibernateLab {
 
         #region Update entity methods
 
-        public async Task UpdateStudent() {
+        private async Task UpdateStudent(int rowForUpdateIndex) {
+            _faculties = _faculties ?? await GetFacultiesAsync();
+            _groups = _groups ?? await GetGroupsAsync();
 
+            var updateStudentForm = new UpdateStudentForm(_students[rowForUpdateIndex], _faculties, _groups, _updateForm);
+            updateStudentForm.ShowDialog();
+        }
+
+        private async Task UpdateTeacher(int rowForUpdateIndex) {
+
+        }
+
+        private async Task UpdateTopic(int rowForUpdateIndex) {
+
+        }
+
+        private async Task UpdateMark(int rowForUpdateIndex) {
+        }
+
+        private async Task UpdateFaculty(int rowForUpdateIndex) {
+            var form = new UpdateDictionaryEntityForm(_faculties[rowForUpdateIndex].Id, _faculties[rowForUpdateIndex].Name, EntityType.Faculty, _updateForm);
+            form.ShowDialog();
+        }
+
+        private async Task UpdateGroup(int rowForUpdateIndex) {
+            var form = new UpdateDictionaryEntityForm(_groups[rowForUpdateIndex].Id, _groups[rowForUpdateIndex].Name, EntityType.Group, _updateForm);
+            form.ShowDialog();
+        }
+
+        private async Task UpdateDepartment(int rowForUpdateIndex) {
+            var form = new UpdateDictionaryEntityForm(_departments[rowForUpdateIndex].Id, _departments[rowForUpdateIndex].Name, EntityType.Department, _updateForm);
+            form.ShowDialog();
+        }
+
+        private async Task UpdateDegree(int rowForUpdateIndex) {
+            var form = new UpdateDictionaryEntityForm(_degrees[rowForUpdateIndex].Id, _degrees[rowForUpdateIndex].Name, EntityType.Degree, _updateForm);
+            form.ShowDialog();
+        }
+
+        private async Task UpdateRank(int rowForUpdateIndex) {
+            var form = new UpdateDictionaryEntityForm(_ranks[rowForUpdateIndex].Id, _ranks[rowForUpdateIndex].Name, EntityType.Rank, _updateForm);
+            form.Name = MessagesConstants.UPDATE_DEPARTMENT_FORM_TITLE;
+            form.ShowDialog();
         }
 
         #endregion

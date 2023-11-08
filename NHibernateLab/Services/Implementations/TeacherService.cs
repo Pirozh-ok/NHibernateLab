@@ -21,16 +21,16 @@ namespace NHibernateLab.Services.Implementations {
         public async override Task<IList<Teacher>> SearchAsync(string text) {
             using (ISession session = NHibernateHelper.OpenSession()) {
                 string hql = "FROM Teacher t " +
-             "LEFT JOIN FETCH t.Department dep " +
-             "LEFT JOIN FETCH t.Degree deg " +
-             "LEFT JOIN FETCH t.Rank r " +
-             "WHERE " +
-             "t.FirstName LIKE :searchText OR " +
-             "t.LastName LIKE :searchText OR " +
-             "t.Patronymic LIKE :searchText OR " +
-             "dep.DepartmentName LIKE :searchText OR " +
-             "deg.DegreeName LIKE :searchText" +
-             "r.RankName LIKE :searchText";
+                    "LEFT JOIN FETCH t.Department dep " +
+                    "LEFT JOIN FETCH t.Degree deg " +
+                    "LEFT JOIN FETCH t.Rank r " +
+                    "WHERE " +
+                    "LOWER(s.FirstName) LIKE LOWER(:searchText) OR " +
+                    "LOWER(s.LastName) LIKE LOWER(:searchText) OR " +
+                    "LOWER(s.Patronymic) LIKE LOWER(:searchText) OR " +
+                    "LOWER(dep.Name) LIKE LOWER(:searchText) OR " +
+                    "LOWER(deg.Name) LIKE LOWER(:searchText) OR " +
+                    "LOWER(r.Name) LIKE LOWER(:searchText)";
 
                 IQuery query = session.CreateQuery(hql);
                 query.SetString("searchText", $"%{text}%");

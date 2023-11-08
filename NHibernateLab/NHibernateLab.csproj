@@ -228,10 +228,23 @@
     <Compile Include="UI\Forms\AddDictionaryEntityForm.Designer.cs">
       <DependentUpon>AddDictionaryEntityForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\AddTeacherForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\AddTeacherForm.Designer.cs">
+      <DependentUpon>AddTeacherForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\ICreateUpdateForm.cs" />
+    <Compile Include="UI\Forms\UpdateDictionaryEntityForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\UpdateDictionaryEntityForm.Designer.cs">
+      <DependentUpon>UpdateDictionaryEntityForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Validators\DictionaryEntityValidator.cs" />
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Validators\StudentValidator.cs" />
+    <Compile Include="Validators\TeacherValidator.cs" />
     <Compile Include="Validators\ValidateResult.cs" />
     <Compile Include="NHibernate\Constants.cs" />
     <Compile Include="NHibernate\EntitiesMaps\DegreeMap.cs" />
@@ -301,6 +314,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\AddStudentForm.resx">
       <DependentUpon>AddStudentForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\AddTeacherForm.resx">
+      <DependentUpon>AddTeacherForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\UpdateDictionaryEntityForm.resx">
+      <DependentUpon>UpdateDictionaryEntityForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\UpdateStudentForm.resx">
       <DependentUpon>UpdateStudentForm.cs</DependentUpon>
