@@ -25,9 +25,9 @@ namespace NHibernateLab.Services.Implementations {
                     "LEFT JOIN FETCH t.Degree deg " +
                     "LEFT JOIN FETCH t.Rank r " +
                     "WHERE " +
-                    "LOWER(s.FirstName) LIKE LOWER(:searchText) OR " +
-                    "LOWER(s.LastName) LIKE LOWER(:searchText) OR " +
-                    "LOWER(s.Patronymic) LIKE LOWER(:searchText) OR " +
+                    "LOWER(t.FirstName) LIKE LOWER(:searchText) OR " +
+                    "LOWER(t.LastName) LIKE LOWER(:searchText) OR " +
+                    "LOWER(t.Patronymic) LIKE LOWER(:searchText) OR " +
                     "LOWER(dep.Name) LIKE LOWER(:searchText) OR " +
                     "LOWER(deg.Name) LIKE LOWER(:searchText) OR " +
                     "LOWER(r.Name) LIKE LOWER(:searchText)";
@@ -40,26 +40,27 @@ namespace NHibernateLab.Services.Implementations {
         }
 
         public async override Task UpdateAsync(Teacher entity) {
-            using (ISession session = NHibernateHelper.OpenSession()) {
-                string hql = "UPDATE Teacher t " +
-             "SET t.FirstName = :newFirstName, " +
-             "t.LastName = :newLastName, " +
-             "t.Patronymic = :newPatronymic, " +
-             "t.DepartmentId = :newDepartment " +
-             "t.DegreeId = :newDegree " +
-             "t.RankId = :newRank " +
-             "WHERE t.Id = :id";
+             using (ISession session = NHibernateHelper.OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    Teacher teacherToUpdate = session.Get<Teacher>(entity.Id);
 
-                IQuery query = session.CreateQuery(hql);
-                query.SetString("newFirstName", entity.FirstName);
-                query.SetString("newLastName", entity.LastName);
-                query.SetString("newPatronymic", entity.Patronymic);
-                query.SetInt32("id", entity.Id);
-                query.SetInt32("DepartmentId", entity.Department.Id);
-                query.SetInt32("DegreeId", entity.Degree.Id);
-                query.SetInt32("RankId", entity.Rank.Id);
+                    teacherToUpdate.FirstName = entity.FirstName;
+                    teacherToUpdate.LastName = entity.LastName;
+                    teacherToUpdate.Patronymic = entity.Patronymic;
+                    teacherToUpdate.Email = entity.Email;
+                    teacherToUpdate.Phone = entity.Phone;
 
-                int updatedCount = await query.ExecuteUpdateAsync();
+                    Department newDepartment = session.Get<Department>(entity.Department.Id);
+                    Degree newDegree = session.Get<Degree>(entity.Degree.Id);
+                    Rank newRank = session.Get<Rank>(entity.Rank.Id);
+                    teacherToUpdate.Department = newDepartment;
+                    teacherToUpdate.Degree = newDegree;
+                    teacherToUpdate.Rank = newRank;
+
+                    await session.UpdateAsync(teacherToUpdate);
+
+                    await transaction.CommitAsync();
+                }
             }
         }
     }

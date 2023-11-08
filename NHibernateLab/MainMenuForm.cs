@@ -19,6 +19,7 @@ namespace NHibernateLab {
         private Dictionary<EntityType, Action> createEntityMethods;
         private Dictionary<EntityType, Func<int, Task>> updateEntityMethods;
         private Dictionary<EntityType, Func<int, Task>> deleteEntityMethods;
+        private Dictionary<EntityType, Func<string, Task>> searchEntityMethods;
 
         private IList<Student> _students;
         private IList<Teacher> _teachers;
@@ -81,6 +82,18 @@ namespace NHibernateLab {
                 { EntityType.Group, UpdateGroup}
             };
 
+            searchEntityMethods = new Dictionary<EntityType, Func<string, Task>> {
+                { EntityType.Student, SearchStudent },
+                { EntityType.Teacher, SearchTeacher },
+                { EntityType.Topic, SearchTopic },
+                { EntityType.Mark, SearchMark },
+                { EntityType.Degree, SearchDegree},
+                { EntityType.Rank, SearchRank},
+                { EntityType.Department, SearchDepartment},
+                { EntityType.Faculty, SearchFaculty},
+                { EntityType.Group, SearchGroup}
+            };
+
             Load += Form_Load;
         }
 
@@ -103,7 +116,7 @@ namespace NHibernateLab {
             var clickedPoint = _activeDataGrid.PointToClient(cmTableAction.Bounds.Location);
             var rowIndex = _activeDataGrid.HitTest(clickedPoint.X, clickedPoint.Y).RowIndex;
 
-            await deleteEntityMethods[_activeDataGridType](rowIndex);          
+            await deleteEntityMethods[_activeDataGridType](rowIndex);
         }
 
         private void addRecordToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -139,7 +152,7 @@ namespace NHibernateLab {
                 default: {
                         _activeDataGrid = dgvStudents;
                         break;
-                }
+                    }
             }
 
             _activeDataGrid.DataSource = await updateGridMethods[_activeDataGridType]();
@@ -169,6 +182,8 @@ namespace NHibernateLab {
                 Фамилия = x.LastName,
                 Имя = x.FirstName,
                 Отчество = x.Patronymic,
+                Почта = x.Email,
+                Телефон = x.Phone,
                 Кафедра = x.Department.Name,
                 Степень = x.Degree.Name,
                 Звание = x.Rank.Name
@@ -309,7 +324,7 @@ namespace NHibernateLab {
 
         }
 
-        private void CreateMark() { 
+        private void CreateMark() {
         }
 
         private void CreateFaculty() {
@@ -342,7 +357,7 @@ namespace NHibernateLab {
         #region Delete entity methods
 
         private async Task DeleteStudent(int deleteRowIndex) {
-            try { 
+            try {
                 var studentService = new StudentService();
                 await studentService.DeleteAsync(_students[deleteRowIndex].CreditBookNumber);
                 _updateForm?.Invoke();
@@ -406,7 +421,7 @@ namespace NHibernateLab {
                 var facultyService = new FacultyService();
                 await facultyService.DeleteAsync(_faculties[deleteRowIndex].Id);
                 _updateForm?.Invoke();
-                MessageBox.Show(MessagesConstants.DELETE_SUCCESS);         
+                MessageBox.Show(MessagesConstants.DELETE_SUCCESS);
             }
             catch {
                 MessageBox.Show(MessagesConstants.DELETE_ERROR);
@@ -462,7 +477,8 @@ namespace NHibernateLab {
         }
 
         private async Task UpdateTeacher(int rowForUpdateIndex) {
-
+            var updateTeacherForm = new UpdateTeacherForm(_teachers[rowForUpdateIndex], _updateForm);
+            updateTeacherForm.ShowDialog();
         }
 
         private async Task UpdateTopic(int rowForUpdateIndex) {
@@ -550,25 +566,23 @@ namespace NHibernateLab {
 
         #endregion
 
+        #region Search methods
+
         private async void btnSearch_Click(object sender, EventArgs e) {
             var filter = txtFilter.Text;
+
+            await searchEntityMethods[_activeDataGridType](filter);
+        }
+
+        private async Task SearchStudent(string filter) {
             var studentService = new StudentService();
 
             if (string.IsNullOrEmpty(filter)) {
-                dgvStudents.DataSource = (await studentService.GetAllAsync()).Select((x, i) => (object)new {
-                    Номер = i + 1,
-                    Фамилия = x.LastName,
-                    Имя = x.FirstName,
-                    Отчество = x.Patronymic,
-                    Номер_зачётной_книжки = x.CreditBookNumber,
-                    Группа = x.Group.Name,
-                    Факультет = x.Faculty.Name
-                }).ToList(); ;
-                return;
+                _activeDataGrid.DataSource = GetAllStudentForGrid();
             }
 
             var result = await studentService.SearchAsync(filter);
-            dgvStudents.DataSource = result.Select((x, i) => (object)new {
+            _activeDataGrid.DataSource = result.Select((x, i) => (object)new {
                 Номер = i + 1,
                 Фамилия = x.LastName,
                 Имя = x.FirstName,
@@ -578,6 +592,107 @@ namespace NHibernateLab {
                 Факультет = x.Faculty.Name
             }).ToList();
         }
+
+        private async Task SearchTeacher(string filter) {
+            var teacherService = new TeacherService();
+
+            if (string.IsNullOrEmpty(filter)) {
+                _activeDataGrid.DataSource = GetAllTeacherForGrid();
+            }
+
+            var result = await teacherService.SearchAsync(filter);
+            _activeDataGrid.DataSource = result.Select((x, i) => (object)new {
+                Номер = i + 1,
+                Фамилия = x.LastName,
+                Имя = x.FirstName,
+                Отчество = x.Patronymic,
+                Почта = x.Email,
+                Телефон = x.Phone,
+                Кафедра = x.Department.Name,
+                Степень = x.Degree.Name,
+                Звание = x.Rank.Name
+            }).ToList();
+        }
+
+        private async Task SearchTopic(string filter) {
+            await Task.CompletedTask;
+        }
+
+        private async Task SearchMark(string filter) {
+            await Task.CompletedTask;
+        }
+
+        private async Task SearchGroup(string filter) {
+            var groupService = new GroupService();
+
+            if (string.IsNullOrEmpty(filter)) {
+                _activeDataGrid.DataSource = GetAllGroupsForGrid();
+            }
+
+            var result = await groupService.SearchAsync(filter);
+            _activeDataGrid.DataSource = result.Select((x, i) => (object)new {
+                Номер = i + 1,
+                Название = x.Name,
+            }).ToList();
+        }
+
+        private async Task SearchFaculty(string filter) {
+            var facultyService = new FacultyService();
+
+            if (string.IsNullOrEmpty(filter)) {
+                _activeDataGrid.DataSource = GetAllFacultyForGrid();
+            }
+
+            var result = await facultyService.SearchAsync(filter);
+            _activeDataGrid.DataSource = result.Select((x, i) => (object)new {
+                Номер = i + 1,
+                Название = x.Name,
+            }).ToList();
+        }
+
+        private async Task SearchDepartment(string filter) {
+            var departmentService = new DepartmentService();
+
+            if (string.IsNullOrEmpty(filter)) {
+                _activeDataGrid.DataSource = GetAllDepartmentsForGrid();
+            }
+
+            var result = await departmentService.SearchAsync(filter);
+            _activeDataGrid.DataSource = result.Select((x, i) => (object)new {
+                Номер = i + 1,
+                Название = x.Name,
+            }).ToList();
+        }
+
+        private async Task SearchRank(string filter) {
+            var rankService = new RankService();
+
+            if (string.IsNullOrEmpty(filter)) {
+                _activeDataGrid.DataSource = GetAllRanksForGrid();
+            }
+
+            var result = await rankService.SearchAsync(filter);
+            _activeDataGrid.DataSource = result.Select((x, i) => (object)new {
+                Номер = i + 1,
+                Название = x.Name,
+            }).ToList();
+        }
+
+        private async Task SearchDegree(string filter) {
+            var degreeService = new DegreeService();
+
+            if (string.IsNullOrEmpty(filter)) {
+                _activeDataGrid.DataSource = GetAllDegreesForGrid();
+            }
+
+            var result = await degreeService.SearchAsync(filter);
+            _activeDataGrid.DataSource = result.Select((x, i) => (object)new {
+                Номер = i + 1,
+                Название = x.Name,
+            }).ToList();
+        }
+
+        #endregion
 
         #region Handlers for grid click event
 

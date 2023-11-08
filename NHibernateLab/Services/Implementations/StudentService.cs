@@ -54,6 +54,7 @@ namespace NHibernateLab.Services.Implementations {
 
                     studentToUpdate.FirstName = entity.FirstName;
                     studentToUpdate.LastName = entity.LastName;
+                    studentToUpdate.Patronymic = entity.Patronymic;
 
                     Faculty newFaculty = session.Get<Faculty>(entity.Faculty.Id);
                     Group newGroup = session.Get<Group>(entity.Group.Id);

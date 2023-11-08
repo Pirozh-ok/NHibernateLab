@@ -241,6 +241,12 @@
     <Compile Include="UI\Forms\UpdateDictionaryEntityForm.Designer.cs">
       <DependentUpon>UpdateDictionaryEntityForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\UpdateTeacherForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\UpdateTeacherForm.Designer.cs">
+      <DependentUpon>UpdateTeacherForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Validators\DictionaryEntityValidator.cs" />
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Validators\StudentValidator.cs" />
@@ -323,6 +329,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\UpdateStudentForm.resx">
       <DependentUpon>UpdateStudentForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\UpdateTeacherForm.resx">
+      <DependentUpon>UpdateTeacherForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

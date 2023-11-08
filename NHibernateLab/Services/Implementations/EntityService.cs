@@ -44,7 +44,7 @@ namespace NHibernateLab.Services.Implementations {
 
         public virtual async Task<IList<TEntity>> SearchAsync(string text) {
             using (ISession session = NHibernateHelper.OpenSession()) {
-                string hql = $"FROM {EntityType} WHERE name LIKE :text";
+                string hql = $"FROM {EntityType} WHERE LOWER(name) LIKE LOWER(:text)";
 
                 IQuery query = session.CreateQuery(hql);
                 query.SetString("text", $"%{text}%");
