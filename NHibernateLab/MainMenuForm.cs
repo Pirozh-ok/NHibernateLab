@@ -198,8 +198,8 @@ namespace NHibernateLab {
                 Номер = i + 1,
                 Название_темы = x.Name,
                 Номер_зачётной_книжки_студента = x.Student.CreditBookNumber,
-                ФИО_преподавателя = $"{x.Teacher.LastName} {x.Teacher.FirstName} {x.Teacher.Patronymic}",
                 ФИО_студента = $"{x.Student.LastName} {x.Student.FirstName} {x.Student.Patronymic}",
+                ФИО_преподавателя = $"{x.Teacher.LastName} {x.Teacher.FirstName} {x.Teacher.Patronymic}"           
             }).ToList();
         }
 
@@ -211,8 +211,8 @@ namespace NHibernateLab {
                 Номер = i + 1,
                 Оценка_за_экзамен = x.ExamMark,
                 Оценка_за_защиту = x.DefendMark,
-                ФИО_студента = $"{x.Student.LastName} {x.Student.FirstName} {x.Student.Patronymic}",
                 Номер_зачётной_книжки_студента = x.Student.CreditBookNumber,
+                ФИО_студента = $"{x.Student.LastName} {x.Student.FirstName} {x.Student.Patronymic}"
             }).ToList();
         }
 
@@ -271,15 +271,15 @@ namespace NHibernateLab {
             return await service.GetAllAsync();
         }
 
-        //public async Task<IList<Mark>> GetMarksAsync() {
-        //    var service = new MarkService();
-        //    return await service.GetAllAsync();
-        //}
+        public async Task<IList<Mark>> GetMarksAsync() {
+            var service = new MarkService();
+            return await service.GetAllAsync();
+        }
 
-        //public async Task<IList<Topic>> GetTopicsAsync() {
-        //    var service = new TopicService();
-        //    return await service.GetAllAsync();
-        //}
+        public async Task<IList<Topic>> GetTopicsAsync() {
+            var service = new TopicService();
+            return await service.GetAllAsync();
+        }
 
         public async Task<IList<Faculty>> GetFacultiesAsync() {
             var service = new FacultyService();
@@ -321,10 +321,13 @@ namespace NHibernateLab {
         }
 
         private void CreateTopic() {
-
+            var createNewTopicForm = new AddTopicForm(_updateForm);
+            createNewTopicForm.ShowDialog();
         }
 
         private void CreateMark() {
+            var createNewMarkForm = new AddMarkForm(_updateForm);
+            createNewMarkForm.ShowDialog();
         }
 
         private void CreateFaculty() {
@@ -482,10 +485,13 @@ namespace NHibernateLab {
         }
 
         private async Task UpdateTopic(int rowForUpdateIndex) {
-
+            var updateNewTopicForm = new UpdateTopicForm(_topics[rowForUpdateIndex],_updateForm);
+            updateNewTopicForm.ShowDialog();
         }
 
         private async Task UpdateMark(int rowForUpdateIndex) {
+            var updateNewMarkForm = new UpdateMarkForm(_marks[rowForUpdateIndex], _updateForm);
+            updateNewMarkForm.ShowDialog();
         }
 
         private async Task UpdateFaculty(int rowForUpdateIndex) {
@@ -615,11 +621,35 @@ namespace NHibernateLab {
         }
 
         private async Task SearchTopic(string filter) {
-            await Task.CompletedTask;
+            if (string.IsNullOrEmpty(filter)) {
+                _activeDataGrid.DataSource = GetAllTopicForGrid();
+            }
+
+            var topicService = new TopicService();
+            var result = await topicService.SearchAsync(filter);
+            _activeDataGrid.DataSource = result.Select((x, i) => (object)new {
+                Номер = i + 1,
+                Название_темы = x.Name,
+                Номер_зачётной_книжки_студента = x.Student.CreditBookNumber,
+                ФИО_студента = $"{x.Student.LastName} {x.Student.FirstName} {x.Student.Patronymic}",
+                ФИО_преподавателя = $"{x.Teacher.LastName} {x.Teacher.FirstName} {x.Teacher.Patronymic}"
+            }).ToList();
         }
 
         private async Task SearchMark(string filter) {
-            await Task.CompletedTask;
+            if (string.IsNullOrEmpty(filter)) {
+                _activeDataGrid.DataSource = GetAllMarksForGrid();
+            }
+
+            var marksService = new MarkService();
+            var result = await marksService.SearchAsync(filter);
+            _activeDataGrid.DataSource = result.Select((x, i) => (object)new {
+                Номер = i + 1,
+                Оценка_за_экзамен = x.ExamMark,
+                Оценка_за_защиту = x.DefendMark,
+                Номер_зачётной_книжки_студента = x.Student.CreditBookNumber,
+                ФИО_студента = $"{x.Student.LastName} {x.Student.FirstName} {x.Student.Patronymic}"
+            }).ToList();
         }
 
         private async Task SearchGroup(string filter) {

@@ -28,6 +28,8 @@ namespace NHibernateLab.Services.Implementations {
                     "LOWER(t.FirstName) LIKE LOWER(:searchText) OR " +
                     "LOWER(t.LastName) LIKE LOWER(:searchText) OR " +
                     "LOWER(t.Patronymic) LIKE LOWER(:searchText) OR " +
+                    "LOWER(t.Phone) LIKE LOWER(:searchText) OR " +
+                    "LOWER(t.Email) LIKE LOWER(:searchText) OR " +
                     "LOWER(dep.Name) LIKE LOWER(:searchText) OR " +
                     "LOWER(deg.Name) LIKE LOWER(:searchText) OR " +
                     "LOWER(r.Name) LIKE LOWER(:searchText)";

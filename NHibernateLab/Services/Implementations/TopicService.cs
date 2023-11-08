@@ -40,7 +40,20 @@ namespace NHibernateLab.Services.Implementations {
         }
 
         public override async Task UpdateAsync(Topic entity) {
-            throw new System.NotImplementedException();
+            using (ISession session = NHibernateHelper.OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    Topic topicToUpdate = session.Get<Topic>(entity.Id);
+                    topicToUpdate.Name = entity.Name;
+
+                    Student newStudent = session.Get<Student>(entity.Student.CreditBookNumber);
+                    Teacher newTeacher = session.Get<Teacher>(entity.Teacher.Id);
+                    topicToUpdate.Teacher = newTeacher;
+                    topicToUpdate.Student = newStudent;
+
+                    await session.UpdateAsync(topicToUpdate);
+                    await transaction.CommitAsync();
+                }
+            }
         }
     }
 }

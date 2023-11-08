@@ -20,10 +20,10 @@ namespace NHibernateLab.Services.Implementations {
         public async override Task<IList<Mark>> SearchAsync(string text) {
             using (ISession session = NHibernateHelper.OpenSession()) {
                 string hql = "FROM Mark m " +
-                    "LEFT JOIN FETCH t.Student s " +
+                    "LEFT JOIN FETCH m.Student s " +
                     "WHERE " +
-                    "LOWER(m.DefendMark) LIKE LOWER(:searchText) OR " +
-                    "LOWER(m.ExamMark) LIKE LOWER(:searchText) OR " +
+                    "CAST(m.DefendMark AS string) LIKE :searchText OR " +
+                    "CAST(m.ExamMark AS string) LIKE :searchText OR " +
                     "LOWER(s.FirstName) LIKE LOWER(:searchText) OR " +
                     "LOWER(s.LastName) LIKE LOWER(:searchText) OR " +
                     "LOWER(s.Patronymic) LIKE LOWER(:searchText)";
@@ -35,8 +35,20 @@ namespace NHibernateLab.Services.Implementations {
             }
         }
 
-        public override Task UpdateAsync(Mark entity) {
-            throw new System.NotImplementedException();
+        public async override Task UpdateAsync(Mark entity) {
+            using (ISession session = NHibernateHelper.OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    Mark markToUpdate = session.Get<Mark>(entity.Id);
+                    markToUpdate.ExamMark = entity.ExamMark;
+                    markToUpdate.DefendMark = entity.DefendMark;
+
+                    Student newStudent = session.Get<Student>(entity.Student.CreditBookNumber);
+                    markToUpdate.Student = newStudent;
+
+                    await session.UpdateAsync(markToUpdate);
+                    await transaction.CommitAsync();
+                }
+            }
         }
     }
 }
